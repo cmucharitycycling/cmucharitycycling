@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="logo.png?v=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บริจาค — CMU Charity Cycling</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;600;700&family=IBM+Plex+Sans+Thai+Condensed:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark:    #0d0b14;
+      --purple:  #2c263f;
+      --yellow:  #f1c40f;
+      --yellow2: #e6b800;
+      --white:   #f0ede8;
+      --muted:   rgba(240,237,232,0.5);
+      --border:  rgba(255,255,255,0.08);
+      --card:    rgba(255,255,255,0.04);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'IBM Plex Sans Thai', sans-serif; background: var(--dark); color: var(--white); min-height: 100vh; padding-top: 80px; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 40px; background: rgba(13,11,20,0.95); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: 22px; letter-spacing: 0.12em; color: var(--yellow); text-decoration: none; font-weight: 700; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { color: var(--muted); font-size: 14px; font-weight: 300; text-decoration: none; letter-spacing: 0.06em; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-cta { background: var(--yellow); color: var(--dark); padding: 8px 20px; border-radius: 4px; font-size: 14px; font-weight: 600; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: var(--yellow2); }
+
+    /* PAGE HEADER */
+    .page-header { max-width: 800px; margin: 0 auto; padding: 50px 40px 30px; border-bottom: 1px solid var(--border); }
+    .page-eyebrow { font-size: 11px; font-weight: 300; letter-spacing: 0.25em; color: var(--yellow); text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .page-eyebrow::before { content: '❤'; font-size: 12px; }
+    .page-title { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: clamp(36px, 6vw, 64px); letter-spacing: 0.04em; color: var(--white); font-weight: 700; margin-bottom: 8px; }
+    .page-sub { font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.8; }
+
+    .main { max-width: 800px; margin: 0 auto; padding: 40px; }
+
+    /* SECTION LABEL */
+    .section-label { font-size: 11px; font-weight: 300; letter-spacing: 0.25em; color: var(--yellow); text-transform: uppercase; margin: 40px 0 20px; display: flex; align-items: center; gap: 10px; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* PAYMENT BOX */
+    .payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .payment-grid { grid-template-columns: 1fr; } }
+
+    .payment-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 24px; text-align: center; }
+    .payment-card-label { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--yellow); margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .payment-card-label::before { content: '◈'; }
+    .payment-qr { width: 180px; height: 180px; object-fit: contain; border: 1px solid var(--border); border-radius: 4px; margin: 0 auto 16px; display: block; background: white; padding: 8px; }
+    .payment-bank { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+    .payment-account { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--yellow); letter-spacing: 0.08em; margin-bottom: 4px; }
+    .payment-name { font-size: 12px; font-weight: 300; color: var(--muted); }
+    .payment-warn { font-size: 11px; color: #ff6b6b; font-weight: 300; margin-top: 12px; }
+
+    /* AMOUNT INPUT */
+    .amount-wrap { display: flex; align-items: center; gap: 0; background: var(--card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
+    .amount-prefix { padding: 13px 16px; font-size: 16px; font-weight: 600; color: var(--yellow); border-right: 1px solid var(--border); background: rgba(241,196,15,0.06); }
+    .amount-input { flex: 1; padding: 13px 16px; background: transparent; border: none; color: var(--white); font-family: 'IBM Plex Sans Thai'; font-size: 15px; outline: none; }
+    .amount-input::placeholder { color: rgba(255,255,255,0.2); }
+
+    /* FORM */
+    .form-group { margin-bottom: 16px; }
+    .form-label { font-size: 11px; font-weight: 300; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; display: block; margin-bottom: 8px; }
+    .form-label .required { color: #ff6b6b; margin-left: 4px; }
+    .form-label .optional { color: rgba(240,237,232,0.25); font-size: 10px; margin-left: 4px; }
+    .form-input { width: 100%; padding: 13px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 4px; color: var(--white); font-family: 'IBM Plex Sans Thai'; font-size: 15px; outline: none; transition: border-color 0.2s; }
+    .form-input:focus { border-color: var(--yellow); }
+    .form-input::placeholder { color: rgba(255,255,255,0.2); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+
+    /* RECEIPT TOGGLE */
+    .receipt-toggle { display: flex; gap: 10px; margin-bottom: 24px; }
+    .toggle-btn {
+      flex: 1; padding: 12px; border-radius: 4px; cursor: pointer;
+      font-family: 'IBM Plex Sans Thai'; font-size: 14px; font-weight: 300;
+      border: 1px solid var(--border); background: var(--card); color: var(--muted);
+      transition: all 0.2s; text-align: center;
+    }
+    .toggle-btn.active { border-color: var(--yellow); background: rgba(241,196,15,0.08); color: var(--white); font-weight: 600; }
+
+    /* RECEIPT FORM */
+    .receipt-form { display: none; background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 24px; margin-bottom: 16px; }
+    .receipt-form.show { display: block; }
+    .receipt-title { font-size: 12px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--yellow); margin-bottom: 20px; display: flex; align-items: center; gap: 6px; }
+    .receipt-title::before { content: '§'; }
+
+    /* FILE */
+    .file-input-wrap { position: relative; background: var(--card); border: 1px dashed var(--border); border-radius: 4px; padding: 20px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+    .file-input-wrap:hover { border-color: var(--yellow); }
+    .file-input-wrap input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+    .file-input-text { font-size: 13px; font-weight: 300; color: var(--muted); }
+    .file-input-text span { color: var(--yellow); }
+
+    /* SUBMIT */
+    .btn-submit { width: 100%; padding: 16px; background: var(--yellow); color: var(--dark); border: none; border-radius: 4px; font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: 22px; letter-spacing: 0.1em; cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 8px; font-weight: 700; }
+    .btn-submit:hover { background: var(--yellow2); transform: translateY(-2px); }
+    .btn-submit:disabled { background: rgba(255,255,255,0.1); color: var(--muted); cursor: not-allowed; transform: none; }
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .page-header, .main { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">CMU CHARITY CYCLING</a>
+  <ul class="nav-links">
+    <li><a href="order.html">สั่งซื้อ</a></li>
+    <li><a href="status.html">เช็คสถานะ</a></li>
+    <li><a href="riders.html">นักปั่น</a></li>
+    <li><a href="donate.html" class="active">บริจาค</a></li>
+  </ul>
+  <a href="order.html" class="nav-cta">สั่งของที่ระลึก</a>
+</nav>
+
+<div class="page-header">
+  <p class="page-eyebrow">Donate</p>
+  <h1 class="page-title">ร่วมบริจาค</h1>
+  <p class="page-sub">ทุกบาทที่บริจาคจะมอบโอกาสทางการศึกษาให้กับเด็กนักเรียนที่ขาดแคลน<br>ภายใต้การดูแลของสมาคมนักศึกษาเก่ามหาวิทยาลัยเชียงใหม่</p>
+</div>
+
+<div class="main">
+
+  <!-- QR + บัญชี -->
+  <div class="section-label">ช่องทางการโอนเงิน</div>
+  <div class="payment-grid">
+    <div class="payment-card">
+      <div class="payment-card-label">โอนผ่านบัญชีธนาคาร</div>
+      <img src="QR_donate.png" class="payment-qr" alt="QR Code" onerror="this.style.display='none'">
+      <div class="payment-bank">ธนาคารไทยพาณิชย์ สาขาคิวเฮาส์</div>
+      <div class="payment-account">227-2-11648-5</div>
+      <div class="payment-name">สมาคมนักศึกษาเก่ามหาวิทยาลัยเชียงใหม่</div>
+      <p class="payment-warn">* กรุณากรอกจำนวนเงินและแนบสลิปด้านล่างหลังโอน</p>
+    </div>
+    <div class="payment-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
+      <div class="payment-card-label">e-Donation</div>
+      <div style="font-size:48px;opacity:0.2;font-family:'IBM Plex Sans Thai Condensed',sans-serif;font-weight:700;">近</div>
+      <div style="font-size:13px;font-weight:300;color:var(--muted);text-align:center;line-height:1.8;">ระบบ e-Donation<br>จะเปิดให้บริการเร็วๆ นี้</div>
+    </div>
+  </div>
+
+  <!-- จำนวนเงิน -->
+  <div class="section-label">จำนวนเงินที่บริจาค</div>
+  <div class="amount-wrap">
+    <span class="amount-prefix">฿</span>
+    <input type="number" id="amount" class="amount-input" placeholder="กรอกจำนวนเงิน">
+  </div>
+
+  <!-- ข้อมูลผู้บริจาค -->
+  <div class="section-label">ข้อมูลผู้บริจาค</div>
+  <div class="form-group">
+    <label class="form-label">ชื่อ-นามสกุล <span class="required">*</span></label>
+    <input type="text" id="name" class="form-input" placeholder="กรอกชื่อ-นามสกุล">
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">โทรศัพท์ <span class="required">*</span></label>
+      <input type="tel" id="tel" class="form-input" placeholder="08xxxxxxxxx">
+    </div>
+    <div class="form-group">
+      <label class="form-label">อีเมล <span class="required">*</span></label>
+      <input type="email" id="email" class="form-input" placeholder="email@example.com">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="form-label">บริษัท/หน่วยงาน <span class="optional">(optional)</span></label>
+    <input type="text" id="company" class="form-input" placeholder="ชื่อบริษัทหรือหน่วยงาน">
+  </div>
+  <div class="form-group">
+    <label class="form-label">ที่อยู่ <span class="optional">(optional)</span></label>
+    <textarea id="address" class="form-input" placeholder="ที่อยู่โดยละเอียด" style="height:80px;resize:none;"></textarea>
+  </div>
+  <div class="form-group">
+    <label class="form-label">เลขบัตรประชาชน / เลขประจำตัวผู้เสียภาษี <span class="optional">(optional)</span></label>
+    <input type="text" id="taxId" class="form-input" placeholder="x-xxxx-xxxxx-xx-x">
+  </div>
+
+  <!-- ขอใบอนุโมทนา -->
+  <div class="section-label">ขอใบอนุโมทนา / ใบเสร็จ</div>
+  <div class="receipt-toggle">
+    <div class="toggle-btn" id="btn-no" onclick="toggleReceipt(false)">ไม่ขอใบเสร็จ</div>
+    <div class="toggle-btn" id="btn-yes" onclick="toggleReceipt(true)">ขอใบเสร็จ / ใบอนุโมทนา</div>
+  </div>
+  <div class="receipt-form" id="receipt-form">
+    <div class="receipt-title">ข้อมูลสำหรับออกใบเสร็จ</div>
+    <div class="form-group">
+      <label class="form-label">ผู้ประสานงาน <span class="optional">(optional)</span></label>
+      <input type="text" id="coordinator" class="form-input" placeholder="ชื่อผู้ประสานงาน">
+    </div>
+    <div class="form-group">
+      <label class="form-label">เบอร์โทรศัพท์ผู้ประสานงาน <span class="optional">(optional)</span></label>
+      <input type="tel" id="coordTel" class="form-input" placeholder="08xxxxxxxxx">
+    </div>
+  </div>
+
+  <!-- สลิป -->
+  <div class="section-label">หลักฐานการโอนเงิน</div>
+  <div class="file-input-wrap">
+    <input type="file" id="fileInput" accept="image/*" onchange="showFileName(this)">
+    <div class="file-input-text">📎 แนบสลิปโอนเงิน &nbsp;<span>คลิกหรือลากไฟล์มาวาง</span></div>
+  </div>
+  <div id="file-name" style="font-size:12px;color:var(--yellow);margin-top:8px;font-weight:300;min-height:18px;"></div>
+
+  <button onclick="sendData()" id="btn" class="btn-submit" style="margin-top:24px;">ยืนยันการบริจาค</button>
+
+</div>
+
+<footer style="border-top:1px solid var(--border);padding:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;max-width:800px;margin:40px auto 0;">
+  <a href="index.html" style="font-family:'IBM Plex Sans Thai Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:0.12em;color:var(--yellow);text-decoration:none;">CMU CHARITY CYCLING</a>
+  <p style="font-size:12px;font-weight:300;color:rgba(240,237,232,0.25);letter-spacing:0.06em;">© 2569 สมาคมนักศึกษาเก่า มหาวิทยาลัยเชียงใหม่</p>
+</footer>
+
+<script>
+  // 🔴 ใส่ URL จาก Apps Script ใหม่หลัง Deploy
+  const WEB_APP_URL = "YOUR_APPS_SCRIPT_URL_HERE";
+
+  var wantReceipt = false;
+
+  function toggleReceipt(val) {
+    wantReceipt = val;
+    document.getElementById('btn-yes').className = 'toggle-btn' + (val ? ' active' : '');
+    document.getElementById('btn-no').className  = 'toggle-btn' + (!val ? ' active' : '');
+    document.getElementById('receipt-form').className = 'receipt-form' + (val ? ' show' : '');
+  }
+  toggleReceipt(false);
+
+  function showFileName(input) {
+    document.getElementById('file-name').innerText = input.files[0] ? '✓ ' + input.files[0].name : '';
+  }
+
+  async function sendData() {
+    const btn = document.getElementById('btn');
+    const name   = document.getElementById('name').value.trim();
+    const tel    = document.getElementById('tel').value.trim();
+    const email  = document.getElementById('email').value.trim();
+    const amount = document.getElementById('amount').value.trim();
+
+    if (!name)   return alert("กรุณากรอกชื่อ-นามสกุล");
+    if (!tel)    return alert("กรุณากรอกเบอร์โทรศัพท์");
+    if (!email)  return alert("กรุณากรอกอีเมล");
+    if (!amount) return alert("กรุณากรอกจำนวนเงิน");
+    if (document.getElementById('fileInput').files.length === 0) return alert("กรุณาแนบสลิปโอนเงิน");
+
+    btn.disabled = true;
+    btn.innerText = "กำลังบันทึกข้อมูล...";
+
+    try {
+      const file = document.getElementById('fileInput').files[0];
+      const base64 = await new Promise(r => {
+        const rd = new FileReader();
+        rd.onload = () => r(rd.result.split(',')[1]);
+        rd.readAsDataURL(file);
+      });
+
+      const payload = {
+        name:        name,
+        company:     document.getElementById('company').value,
+        address:     document.getElementById('address').value,
+        tel:         tel,
+        email:       email,
+        taxId:       document.getElementById('taxId').value,
+        coordinator: document.getElementById('coordinator').value,
+        coordTel:    document.getElementById('coordTel').value,
+        amount:      amount,
+        wantReceipt: wantReceipt,
+        fileData:    base64,
+        fileName:    file.name,
+        mimeType:    file.type
+      };
+
+      await fetch(WEB_APP_URL, {
+        method: "POST", mode: "no-cors",
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify(payload)
+      });
+
+      document.body.innerHTML = `
+        <div style="background:#0d0b14;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;font-family:'IBM Plex Sans Thai',sans-serif;">
+          <div style="font-family:'IBM Plex Sans Thai Condensed',sans-serif;font-size:96px;font-weight:700;color:#f1c40f;line-height:1;margin-bottom:20px;">✓</div>
+          <h2 style="font-family:'IBM Plex Sans Thai Condensed',sans-serif;font-size:42px;letter-spacing:0.06em;color:#f1c40f;margin-bottom:10px;font-weight:700;">ขอบคุณสำหรับการบริจาค</h2>
+          <p style="font-size:15px;font-weight:300;color:rgba(240,237,232,0.5);margin-bottom:28px;">เราได้รับข้อมูลของคุณเรียบร้อยแล้ว ทีมงานจะติดต่อกลับเร็วๆ นี้</p>
+          <a href="index.html" style="border:1px solid #f1c40f;color:#f1c40f;padding:12px 28px;border-radius:4px;font-family:'IBM Plex Sans Thai';font-size:14px;text-decoration:none;letter-spacing:0.06em;">← กลับหน้าหลัก</a>
+        </div>`;
+      window.parent.scrollTo(0, 0);
+
+    } catch (e) {
+      alert("เกิดข้อผิดพลาด: " + e.message);
+      btn.disabled = false;
+      btn.innerText = "ยืนยันการบริจาค";
+    }
+  }
+</script>
+</body>
+</html>
