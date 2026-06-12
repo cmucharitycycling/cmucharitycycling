@@ -171,15 +171,17 @@
     </div>
   </div>
   <div class="form-group">
-    <label class="form-label">บริษัท/หน่วยงาน <span class="optional">(optional)</span></label>
-    <input type="text" id="company" class="form-input" placeholder="ชื่อบริษัทหรือหน่วยงาน">
-  </div>
-  <div class="form-group">
-    <label class="form-label">ที่อยู่ <span class="optional">(optional)</span></label>
-    <textarea id="address" class="form-input" placeholder="ที่อยู่โดยละเอียด" style="height:80px;resize:none;"></textarea>
-  </div>
-  <div class="form-group">
-    <label class="form-label">เลขบัตรประชาชน / เลขประจำตัวผู้เสียภาษี <span class="optional">(optional)</span></label>
+    <label class="form-label">
+  บริษัท/หน่วยงาน <span class="required">*</span>
+</label>
+
+<label class="form-label">
+  ที่อยู่ <span class="required">*</span>
+</label>
+
+<label class="form-label">
+  เลขบัตรประชาชน / เลขประจำตัวผู้เสียภาษี <span class="required">*</span>
+</label>
     <input type="text" id="taxId" class="form-input" placeholder="x-xxxx-xxxxx-xx-x">
   </div>
 
@@ -237,17 +239,24 @@
   }
 
   async function sendData() {
-    const btn = document.getElementById('btn');
-    const name   = document.getElementById('name').value.trim();
-    const tel    = document.getElementById('tel').value.trim();
-    const email  = document.getElementById('email').value.trim();
-    const amount = document.getElementById('amount').value.trim();
+    const name    = document.getElementById('name').value.trim();
+const tel     = document.getElementById('tel').value.trim();
+const email   = document.getElementById('email').value.trim();
+const amount  = document.getElementById('amount').value.trim();
+const company = document.getElementById('company').value.trim();
+const address = document.getElementById('address').value.trim();
+const taxId   = document.getElementById('taxId').value.trim();
 
-    if (!name)   return alert("กรุณากรอกชื่อ-นามสกุล");
-    if (!tel)    return alert("กรุณากรอกเบอร์โทรศัพท์");
-    if (!email)  return alert("กรุณากรอกอีเมล");
-    if (!amount) return alert("กรุณากรอกจำนวนเงิน");
-    if (document.getElementById('fileInput').files.length === 0) return alert("กรุณาแนบสลิปโอนเงิน");
+if (!name)    return alert("กรุณากรอกชื่อ-นามสกุล");
+if (!tel)     return alert("กรุณากรอกเบอร์โทรศัพท์");
+if (!email)   return alert("กรุณากรอกอีเมล");
+if (!company) return alert("กรุณากรอกชื่อบริษัทหรือหน่วยงาน");
+if (!address) return alert("กรุณากรอกที่อยู่");
+if (!taxId)   return alert("กรุณากรอกเลขบัตรประชาชน / เลขประจำตัวผู้เสียภาษี");
+if (!amount)  return alert("กรุณากรอกจำนวนเงิน");
+
+if (document.getElementById('fileInput').files.length === 0)
+  return alert("กรุณาแนบสลิปโอนเงิน");
 
     btn.disabled = true;
     btn.innerText = "กำลังบันทึกข้อมูล...";
