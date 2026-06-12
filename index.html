@@ -21,21 +21,23 @@
 
     /* NAV */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 40px;
-      background: linear-gradient(to bottom, rgba(13,11,20,0.95), transparent);
-    }
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 40px;
+  background: #2c263f;  /* เปลี่ยนจาก rgba(13,11,20,0.95) เป็นสีม่วง */
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
     .nav-logo { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: 22px; letter-spacing: 0.12em; color: var(--yellow); text-decoration: none; }
     .nav-links { display: flex; gap: 28px; list-style: none; }
     .nav-links a {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;  /* เพิ่มจาก 13px */
   font-weight: 600;
   text-decoration: none;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   transition: color 0.2s;
+}
 }
 .nav-links a:hover, .nav-links a.active { color: var(--white); }
     .nav-cta { background: var(--yellow); color: var(--dark); padding: 8px 20px; border-radius: 4px; font-size: 14px; font-weight: 600; text-decoration: none; letter-spacing: 0.04em; transition: background 0.2s; }
