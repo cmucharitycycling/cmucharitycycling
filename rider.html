@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ทะเบียนนักปั่น CMU Cycling</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #2c263f; --accent: #f1c40f; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Kanit', sans-serif; background: var(--primary); padding: 20px; }
+
+    /* Header */
+    .header { text-align: center; padding: 30px 20px 25px; }
+    .header h1 { font-size: 26px; color: var(--accent); margin-bottom: 5px; }
+    .header p  { color: #aaa; font-size: 14px; }
+    .counter   { display: inline-block; background: var(--accent); color: var(--primary);
+                 font-weight: 700; padding: 5px 16px; border-radius: 20px; font-size: 15px; margin-top: 10px; }
+
+    /* Filter bar */
+    .filter-bar { max-width: 1000px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .filter-input {
+      flex: 1; min-width: 200px; padding: 10px 16px;
+      border: 2px solid rgba(255,255,255,0.15); border-radius: 10px;
+      background: rgba(255,255,255,0.08); color: white;
+      font-family: 'Kanit'; font-size: 15px; outline: none;
+    }
+    .filter-input::placeholder { color: #aaa; }
+    .filter-input:focus { border-color: var(--accent); }
+    .filter-select {
+      padding: 10px 16px; border: 2px solid rgba(255,255,255,0.15); border-radius: 10px;
+      background: rgba(255,255,255,0.08); color: white;
+      font-family: 'Kanit'; font-size: 15px; outline: none; cursor: pointer;
+    }
+    .filter-select option { background: var(--primary); color: white; }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* Card */
+    .card {
+      background: white; border-radius: 14px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: fadeUp 0.4s ease both;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    .card-photo {
+      width: 100%; aspect-ratio: 1/1; object-fit: cover; object-position: top;
+      background: #ddd; display: block;
+    }
+    .card-placeholder {
+      width: 100%; aspect-ratio: 1/1;
+      background: linear-gradient(135deg, var(--primary) 0%, #3d3560 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px;
+    }
+    .card-body { padding: 10px 10px 12px; }
+    .card-name { font-weight: 600; color: var(--primary); font-size: 16px; line-height: 1.3; margin-bottom: 2px; }
+    .card-nickname { font-size: 14px; color: #888; margin-bottom: 6px; }
+    .card-id { font-size: 13px; color: #999; margin-bottom: 5px; }
+
+    .badge {
+      display: inline-block; font-size: 12px; font-weight: 600;
+      padding: 2px 8px; border-radius: 10px; margin: 2px 2px 0 0;
+      line-height: 1.6;
+    }
+    .badge-faculty { background: var(--primary); color: white; }
+    .badge-type    { background: #fff3cd; color: #856404; }
+    .badge-date    { background: #d1ecf1; color: #0c5460; }
+
+    /* States */
+    .loading { text-align:center; color: var(--accent); padding: 80px 20px; font-size: 18px; grid-column: 1/-1; }
+    .empty   { text-align:center; color: #aaa; padding: 80px 20px; font-size: 16px; grid-column: 1/-1; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🚲 ทะเบียนนักปั่น CMU Charity Cycling</h1>
+  <p>ปั่นเพื่อน้อง มช. กรุงเทพฯ–เชียงใหม่</p>
+  <div class="counter" id="counter">⏳ กำลังโหลด...</div>
+</div>
+
+<div class="filter-bar" style="max-width:1000px;margin:0 auto 20px;">
+  <input type="text" class="filter-input" id="searchInput" placeholder="🔍 ค้นหาชื่อ หรือ รหัสนักศึกษา..." oninput="renderCards()">
+  <select class="filter-select" id="facultyFilter" onchange="renderCards()">
+    <option value="">🎓 ทุกคณะ</option>
+  </select>
+  <select class="filter-select" id="typeFilter" onchange="renderCards()">
+    <option value="">👥 ทุกประเภท</option>
+  </select>
+</div>
+
+<div class="grid" id="grid">
+  <div class="loading">⏳ กำลังโหลดข้อมูล...</div>
+</div>
+
+<script>
+  // 🔴 แก้ตรงนี้ใส่ URL จาก Apps Script ของ Form Sheet
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwcFk6renjBy2xcWjovf5MY6r_MtasbiQ-8nExD4jYP8JR1xmx2PCLSIQMt92Uc6n_seA/exec";
+
+  let allMembers = [];
+
+  async function loadMembers() {
+    try {
+      const res = await fetch(WEB_APP_URL);
+      allMembers = await res.json();
+
+      // ✅ สร้าง filter options จากข้อมูลจริง
+      const faculties = [...new Set(allMembers.map(m => m.faculty).filter(Boolean))].sort();
+      faculties.push("นักปั่นอิสระ");
+      const types     = [...new Set(allMembers.map(m => m.type).filter(Boolean))].sort();
+
+      const fSel = document.getElementById('facultyFilter');
+      faculties.forEach(f => {
+        const opt = document.createElement('option');
+        opt.value = f; opt.textContent = f;
+        fSel.appendChild(opt);
+      });
+
+      const tSel = document.getElementById('typeFilter');
+      types.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t; opt.textContent = t;
+        tSel.appendChild(opt);
+      });
+
+      renderCards();
+    } catch (err) {
+      document.getElementById('grid').innerHTML =
+        `<div class="empty">⚠️ โหลดข้อมูลไม่สำเร็จ<br><span style="font-size:13px;">${err.message}</span></div>`;
+    }
+  }
+
+  function renderCards() {
+    const keyword  = document.getElementById('searchInput').value.toLowerCase().trim();
+    const faculty  = document.getElementById('facultyFilter').value;
+    const type     = document.getElementById('typeFilter').value;
+    const grid     = document.getElementById('grid');
+
+    const filtered = allMembers.filter(m => {
+      const matchSearch  = !keyword || m.name.toLowerCase().includes(keyword) || (m.studentId || "").includes(keyword);
+      const matchFaculty = !faculty || m.faculty === faculty || (faculty === "นักปั่นอิสระ" && !m.faculty);
+      const matchType    = !type    || m.type    === type;
+      return matchSearch && matchFaculty && matchType;
+    });
+
+    document.getElementById('counter').innerText = `👥 ${filtered.length} / ${allMembers.length} คน`;
+
+    if (!filtered.length) {
+      grid.innerHTML = `<div class="empty">🔎 ไม่พบข้อมูลที่ค้นหา</div>`;
+      return;
+    }
+
+    grid.innerHTML = filtered.map((m, i) => {
+     const photoHtml = m.photo
+  ? `<img class="card-photo" src="${m.photo}=w400" loading="lazy"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+     <div class="card-placeholder" style="display:none;">🚴</div>`
+  : `<div class="card-placeholder">🚴</div>`;
+
+      const delay = Math.min(i * 0.03, 0.5);
+
+      return `
+        <div class="card" style="animation-delay:${delay}s">
+          ${photoHtml}
+          <div class="card-body">
+            <div class="card-name">${m.name}</div>
+            ${m.nickname ? `<div class="card-nickname">"${m.nickname}"</div>` : ""}
+            ${m.studentId ? `<div class="card-id">🎓 ${m.studentId}</div>` : ""}
+            <div>
+              ${m.faculty  ? `<span class="badge badge-faculty">${m.faculty}</span>` : ""}
+              ${m.rideDate ? `<span class="badge badge-date">📅 ${m.rideDate.substring(0,10)}</span>` : ""}
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  loadMembers();
+</script>
+</body>
+</html>
