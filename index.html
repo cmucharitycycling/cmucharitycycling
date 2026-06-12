@@ -28,8 +28,16 @@
     }
     .nav-logo { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: 22px; letter-spacing: 0.12em; color: var(--yellow); text-decoration: none; }
     .nav-links { display: flex; gap: 28px; list-style: none; }
-    .nav-links a { color: var(--muted); font-size: 14px; font-weight: 300; text-decoration: none; letter-spacing: 0.06em; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--white); }
+    .nav-links a {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--white); }
     .nav-cta { background: var(--yellow); color: var(--dark); padding: 8px 20px; border-radius: 4px; font-size: 14px; font-weight: 600; text-decoration: none; letter-spacing: 0.04em; transition: background 0.2s; }
     .nav-cta:hover { background: var(--yellow2); }
 
