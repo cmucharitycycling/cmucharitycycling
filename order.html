@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>สั่งซื้อของที่ระลึก — CMU Charity Cycling</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;600;700&family=IBM+Plex+Sans+Thai+Condensed:wght@700&display=swap" rel="stylesheet">
   <style>
     :root {
       --dark:    #0d0b14;
@@ -17,7 +17,7 @@
       --border:  rgba(255,255,255,0.08);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Kanit', sans-serif; background: var(--dark); color: var(--white); min-height: 100vh; padding-top: 80px; }
+    body { font-family: 'IBM Plex Sans Thai', sans-serif; background: var(--dark); color: var(--white); min-height: 100vh; padding-top: 80px; }
 
     /* NAV */
     nav {
@@ -27,7 +27,7 @@
       background: rgba(13,11,20,0.95);
       border-bottom: 1px solid var(--border);
     }
-    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.12em; color: var(--yellow); text-decoration: none; }
+    .nav-logo { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: 22px; letter-spacing: 0.12em; color: var(--yellow); text-decoration: none; }
     .nav-links { display: flex; gap: 28px; list-style: none; }
     .nav-links a { color: var(--muted); font-size: 14px; font-weight: 300; text-decoration: none; letter-spacing: 0.06em; transition: color 0.2s; }
     .nav-links a:hover, .nav-links a.active { color: var(--white); }
@@ -37,7 +37,7 @@
     /* PAGE HEADER */
     .page-header { max-width: 1000px; margin: 0 auto; padding: 50px 40px 30px; border-bottom: 1px solid var(--border); }
     .page-eyebrow { font-size: 11px; font-weight: 300; letter-spacing: 0.25em; color: var(--yellow); text-transform: uppercase; margin-bottom: 10px; }
-    .page-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 64px); letter-spacing: 0.04em; color: var(--white); }
+    .page-title { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: clamp(36px, 6vw, 64px); letter-spacing: 0.04em; color: var(--white); }
 
     .main { max-width: 1000px; margin: 0 auto; padding: 40px; }
 
@@ -84,7 +84,7 @@
       color: var(--white); font-size: 16px; line-height: 1;
       cursor: pointer; transition: background 0.15s, border-color 0.15s;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Kanit'; flex-shrink: 0;
+      font-family: 'IBM Plex Sans Thai'; flex-shrink: 0;
     }
     .qty-btn:hover { background: rgba(241,196,15,0.15); border-color: var(--yellow); color: var(--yellow); }
     .qty-btn:active { transform: scale(0.92); }
@@ -103,7 +103,7 @@
       justify-content: space-between; margin: 32px 0;
     }
     .total-label { font-size: 12px; font-weight: 300; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; }
-    .total-amount { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 0.06em; color: var(--yellow); }
+    .total-amount { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: 32px; letter-spacing: 0.06em; color: var(--yellow); }
 
     /* SHIPPING */
     .ship-options { display: flex; flex-direction: column; gap: 10px; }
@@ -124,7 +124,7 @@
       width: 100%; padding: 13px 16px;
       background: var(--card-bg); border: 1px solid var(--border);
       border-radius: 4px; color: var(--white);
-      font-family: 'Kanit'; font-size: 15px; outline: none;
+      font-family: 'IBM Plex Sans Thai'; font-size: 15px; outline: none;
       transition: border-color 0.2s;
     }
     .form-input:focus { border-color: var(--yellow); }
@@ -154,7 +154,7 @@
       width: 100%; padding: 16px;
       background: var(--yellow); color: var(--dark);
       border: none; border-radius: 4px;
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: 'IBM Plex Sans Thai Condensed', sans-serif;
       font-size: 22px; letter-spacing: 0.1em;
       cursor: pointer; transition: background 0.2s, transform 0.15s;
       margin-top: 8px;
@@ -241,7 +241,7 @@
 </div>
 
 <footer style="border-top:1px solid var(--border);padding:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;max-width:1000px;margin:40px auto 0;">
-  <a href="index.html" style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.12em;color:var(--yellow);text-decoration:none;">CMU CHARITY CYCLING</a>
+  <a href="index.html" style="font-family:'IBM Plex Sans Thai Condensed',sans-serif;font-size:18px;letter-spacing:0.12em;color:var(--yellow);text-decoration:none;">CMU CHARITY CYCLING</a>
   <p style="font-size:12px;font-weight:300;color:rgba(240,237,232,0.25);letter-spacing:0.06em;">© 2569 สมาคมนักศึกษาเก่า มหาวิทยาลัยเชียงใหม่</p>
 </footer>
 
@@ -413,11 +413,11 @@
       });
 
       document.body.innerHTML = `
-        <div style="background:var(--dark);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;font-family:'Kanit',sans-serif;">
+        <div style="background:var(--dark);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;font-family:'IBM Plex Sans Thai',sans-serif;">
           <div style="font-size:72px;margin-bottom:20px;">✅</div>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:0.06em;color:#f1c40f;margin-bottom:10px;">สั่งซื้อสำเร็จ</h2>
+          <h2 style="font-family:'IBM Plex Sans Thai Condensed',sans-serif;font-size:42px;letter-spacing:0.06em;color:#f1c40f;margin-bottom:10px;">สั่งซื้อสำเร็จ</h2>
           <p style="font-size:15px;font-weight:300;color:rgba(240,237,232,0.5);margin-bottom:28px;">เราได้รับข้อมูลของคุณเรียบร้อยแล้ว ทีมงานจะติดต่อกลับเร็วๆ นี้</p>
-          <a href="index.html" style="border:1px solid #f1c40f;color:#f1c40f;padding:12px 28px;border-radius:4px;font-family:'Kanit';font-size:14px;text-decoration:none;">← กลับหน้าหลัก</a>
+          <a href="index.html" style="border:1px solid #f1c40f;color:#f1c40f;padding:12px 28px;border-radius:4px;font-family:'IBM Plex Sans Thai';font-size:14px;text-decoration:none;">← กลับหน้าหลัก</a>
         </div>`;
       window.parent.scrollTo(0, 0);
 
