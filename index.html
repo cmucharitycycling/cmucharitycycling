@@ -15,298 +15,196 @@
       --muted:   rgba(240,237,232,0.5);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
+    body { font-family: 'Kanit', sans-serif; background: var(--dark); color: var(--white); overflow-x: hidden; }
 
-    body {
-      font-family: 'Kanit', sans-serif;
-      background: var(--dark);
-      color: var(--white);
-      overflow-x: hidden;
-    }
-
-    /* ─── NAV ─── */
+    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 18px 40px;
       background: linear-gradient(to bottom, rgba(13,11,20,0.95), transparent);
     }
-    .nav-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px; letter-spacing: 0.12em;
-      color: var(--yellow);
-      text-decoration: none;
-    }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.12em; color: var(--yellow); text-decoration: none; }
     .nav-links { display: flex; gap: 28px; list-style: none; }
-    .nav-links a {
-      color: var(--muted); font-size: 14px; font-weight: 300;
-      text-decoration: none; letter-spacing: 0.06em;
-      transition: color 0.2s;
-    }
+    .nav-links a { color: var(--muted); font-size: 14px; font-weight: 300; text-decoration: none; letter-spacing: 0.06em; transition: color 0.2s; }
     .nav-links a:hover { color: var(--white); }
-    .nav-cta {
-      background: var(--yellow); color: var(--dark);
-      padding: 8px 20px; border-radius: 4px;
-      font-size: 14px; font-weight: 600;
-      text-decoration: none; letter-spacing: 0.04em;
-      transition: background 0.2s;
-    }
+    .nav-cta { background: var(--yellow); color: var(--dark); padding: 8px 20px; border-radius: 4px; font-size: 14px; font-weight: 600; text-decoration: none; letter-spacing: 0.04em; transition: background 0.2s; }
     .nav-cta:hover { background: var(--yellow2); }
 
-    /* ─── HERO ─── */
-    .hero {
-      position: relative; width: 100%; height: 100vh;
-      overflow: hidden; display: flex;
-      align-items: center; justify-content: center;
-    }
-    .hero-video-wrap {
-      position: absolute; inset: 0;
-      pointer-events: none;
-    }
+    /* HERO */
+    .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .hero-video-wrap { position: absolute; inset: 0; pointer-events: none; }
     .hero-video-wrap iframe {
-      position: absolute;
-      top: 50%; left: 50%;
+      position: absolute; top: 50%; left: 50%;
       width: 177.78vh; min-width: 100%;
       height: 56.25vw; min-height: 100%;
-      transform: translate(-50%, -50%);
-      border: none;
+      transform: translate(-50%, -50%); border: none;
     }
     .hero-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(13,11,20,0.3) 0%,
-        rgba(13,11,20,0.5) 60%,
-        rgba(13,11,20,1) 100%
-      );
+      background: linear-gradient(to bottom, rgba(13,11,20,0.3) 0%, rgba(13,11,20,0.5) 60%, rgba(13,11,20,1) 100%);
     }
-    .hero-content {
-      position: relative; z-index: 2;
-      text-align: center; padding: 0 20px;
-    }
-    .hero-badge {
-      display: inline-block;
-      border: 1px solid rgba(241,196,15,0.4);
-      color: var(--yellow);
-      font-size: 12px; font-weight: 300; letter-spacing: 0.2em;
-      padding: 5px 16px; border-radius: 2px;
-      margin-bottom: 24px;
-      text-transform: uppercase;
-    }
-    .hero-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(56px, 10vw, 120px);
-      line-height: 0.95; letter-spacing: 0.04em;
-      color: var(--white);
-      margin-bottom: 8px;
-    }
+    .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 20px; }
+    .hero-badge { display: inline-block; border: 1px solid rgba(241,196,15,0.4); color: var(--yellow); font-size: 12px; font-weight: 300; letter-spacing: 0.2em; padding: 5px 16px; border-radius: 2px; margin-bottom: 24px; text-transform: uppercase; }
+    .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 10vw, 120px); line-height: 0.95; letter-spacing: 0.04em; color: var(--white); margin-bottom: 8px; }
     .hero-title span { color: var(--yellow); }
-    .hero-sub {
-      font-size: clamp(14px, 2vw, 18px);
-      font-weight: 300; color: var(--muted);
-      letter-spacing: 0.08em;
-      margin-bottom: 36px;
-    }
-    .hero-buttons {
-      display: flex; gap: 12px;
-      justify-content: center; flex-wrap: wrap;
-    }
-    .btn-primary {
-      background: var(--yellow); color: var(--dark);
-      padding: 13px 32px; border-radius: 4px;
-      font-family: 'Kanit'; font-size: 15px; font-weight: 600;
-      text-decoration: none; letter-spacing: 0.04em;
-      transition: background 0.2s, transform 0.15s;
-    }
+    .hero-sub { font-size: clamp(14px, 2vw, 18px); font-weight: 300; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 36px; }
+    .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: var(--yellow); color: var(--dark); padding: 13px 32px; border-radius: 4px; font-family: 'Kanit'; font-size: 15px; font-weight: 600; text-decoration: none; letter-spacing: 0.04em; transition: background 0.2s, transform 0.15s; }
     .btn-primary:hover { background: var(--yellow2); transform: translateY(-2px); }
-    .btn-ghost {
-      border: 1px solid rgba(240,237,232,0.35); color: var(--white);
-      padding: 13px 32px; border-radius: 4px;
-      font-family: 'Kanit'; font-size: 15px; font-weight: 300;
-      text-decoration: none; letter-spacing: 0.04em;
-      transition: border-color 0.2s, transform 0.15s;
-    }
+    .btn-ghost { border: 1px solid rgba(240,237,232,0.35); color: var(--white); padding: 13px 32px; border-radius: 4px; font-family: 'Kanit'; font-size: 15px; font-weight: 300; text-decoration: none; letter-spacing: 0.04em; transition: border-color 0.2s, transform 0.15s; }
     .btn-ghost:hover { border-color: var(--white); transform: translateY(-2px); }
 
-    /* ─── COUNTDOWN ─── */
-    .countdown-section {
-      padding: 60px 40px;
-      text-align: center;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .cd-eyebrow {
-      font-size: 11px; font-weight: 300; letter-spacing: 0.25em;
-      color: var(--yellow); text-transform: uppercase; margin-bottom: 20px;
-    }
-    .cd-date {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(28px, 5vw, 48px);
-      letter-spacing: 0.06em; color: var(--white);
-      margin-bottom: 32px;
-    }
-    .cd-boxes {
-      display: flex; justify-content: center;
-      gap: clamp(8px, 2vw, 20px); flex-wrap: wrap;
-    }
-    .cd-box {
-      min-width: clamp(64px, 12vw, 90px);
-      padding: 14px 10px;
-      border: 1px solid rgba(241,196,15,0.2);
-      border-radius: 4px;
-      background: rgba(241,196,15,0.04);
-    }
-    .cd-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(32px, 6vw, 52px);
-      color: var(--yellow); line-height: 1;
-    }
-    .cd-unit {
-      font-size: 11px; font-weight: 300;
-      color: var(--muted); letter-spacing: 0.12em;
-      margin-top: 4px;
-    }
-    .cd-sep {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(32px, 6vw, 52px);
-      color: rgba(241,196,15,0.3);
-      align-self: flex-start; padding-top: 14px;
-    }
+    /* COUNTDOWN */
+    .countdown-section { padding: 60px 40px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .cd-eyebrow { font-size: 11px; font-weight: 300; letter-spacing: 0.25em; color: var(--yellow); text-transform: uppercase; margin-bottom: 20px; }
+    .cd-date { font-family: 'Bebas Neue', sans-serif; font-size: clamp(28px, 5vw, 48px); letter-spacing: 0.06em; color: var(--white); margin-bottom: 32px; }
+    .cd-boxes { display: flex; justify-content: center; gap: clamp(8px, 2vw, 20px); flex-wrap: wrap; align-items: flex-start; }
+    .cd-box { min-width: clamp(64px, 12vw, 90px); padding: 14px 10px; border: 1px solid rgba(241,196,15,0.2); border-radius: 4px; background: rgba(241,196,15,0.04); }
+    .cd-num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 6vw, 52px); color: var(--yellow); line-height: 1; }
+    .cd-unit { font-size: 11px; font-weight: 300; color: var(--muted); letter-spacing: 0.12em; margin-top: 4px; }
+    .cd-sep { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 6vw, 52px); color: rgba(241,196,15,0.3); padding-top: 14px; }
 
-    /* ─── FUNDRAISING ─── */
-    .fund-section {
-      max-width: 700px; margin: 0 auto;
-      padding: 70px 40px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .section-eyebrow {
-      font-size: 11px; font-weight: 300; letter-spacing: 0.25em;
-      color: var(--yellow); text-transform: uppercase; margin-bottom: 12px;
-    }
-    .fund-numbers {
-      display: flex; justify-content: space-between;
-      align-items: baseline; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
-    }
-    .fund-current {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(36px, 6vw, 56px);
-      color: var(--white); letter-spacing: 0.04em;
-    }
-    .fund-goal {
-      font-size: 14px; font-weight: 300; color: var(--muted);
-    }
-    .fund-track {
-      height: 4px; background: rgba(255,255,255,0.1);
-      border-radius: 2px; overflow: hidden; margin-bottom: 10px;
-    }
-    .fund-fill {
-      height: 100%; background: var(--yellow);
-      border-radius: 2px; width: 0%;
-      transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
-    }
-    .fund-pct {
-      font-size: 13px; font-weight: 300; color: var(--yellow);
-    }
+    /* SECTION WRAPPER */
+    .section-wrap { max-width: 1000px; margin: 0 auto; padding: 70px 40px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .section-eyebrow { font-size: 11px; font-weight: 300; letter-spacing: 0.25em; color: var(--yellow); text-transform: uppercase; margin-bottom: 20px; }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(28px, 4vw, 42px); letter-spacing: 0.04em; color: var(--white); margin-bottom: 32px; }
 
-    /* ─── CTA GRID ─── */
-    .cta-section {
-      max-width: 900px; margin: 0 auto;
-      padding: 70px 40px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+    /* ROUTE CARDS */
+    .route-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .route-card {
+      position: relative; border-radius: 6px; overflow: hidden;
+      aspect-ratio: 4/3; cursor: default;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: border-color 0.2s, transform 0.2s;
     }
-    .cta-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px; margin-top: 32px;
+    .route-card:hover { border-color: var(--yellow); transform: translateY(-4px); }
+    .route-card-img {
+      width: 100%; height: 100%; object-fit: cover;
+      background: linear-gradient(135deg, #1a1528 0%, #2c263f 100%);
+      display: block;
     }
-    .cta-card {
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 6px; padding: 28px 24px;
-      text-decoration: none;
-      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    .route-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,11,20,0.95) 0%, rgba(13,11,20,0.3) 60%, transparent 100%);
     }
-    .cta-card:hover {
-      border-color: var(--yellow);
-      background: rgba(241,196,15,0.04);
-      transform: translateY(-4px);
+    .route-card-label {
+      position: absolute; top: 12px; left: 12px;
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(13,11,20,0.75);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 4px 10px; border-radius: 2px;
+      font-size: 10px; font-weight: 600; letter-spacing: 0.18em;
+      color: var(--white); text-transform: uppercase;
     }
-    .cta-card-icon {
-      font-size: 28px; margin-bottom: 14px; display: block;
-    }
-    .cta-card-title {
-      font-size: 18px; font-weight: 600; color: var(--white);
-      margin-bottom: 6px;
-    }
-    .cta-card-desc {
-      font-size: 13px; font-weight: 300; color: var(--muted);
-      line-height: 1.6;
-    }
-
-    /* ─── ABOUT ─── */
-    .about-section {
-      max-width: 700px; margin: 0 auto;
-      padding: 70px 40px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .about-body {
-      font-size: 16px; font-weight: 300;
-      color: rgba(240,237,232,0.75);
-      line-height: 1.9; margin-top: 20px;
-    }
-    .about-stats {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 24px; margin-top: 40px;
-    }
-    .stat-num {
+    .route-card-label-dot { width: 6px; height: 6px; background: var(--yellow); border-radius: 50%; }
+    .route-card-body { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; }
+    .route-card-day {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 42px; color: var(--yellow);
-      letter-spacing: 0.04em; line-height: 1;
+      font-size: 13px; letter-spacing: 0.18em;
+      color: var(--yellow); margin-bottom: 4px;
     }
-    .stat-label {
-      font-size: 13px; font-weight: 300;
-      color: var(--muted); margin-top: 4px;
+    .route-card-route {
+      font-size: 15px; font-weight: 600; color: var(--white);
+      line-height: 1.3; margin-bottom: 4px;
     }
-
-    /* ─── FOOTER ─── */
-    footer {
-      padding: 50px 40px;
-      display: flex; align-items: center;
-      justify-content: space-between; flex-wrap: wrap; gap: 20px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-    .footer-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 20px; letter-spacing: 0.12em;
-      color: var(--yellow); text-decoration: none;
-    }
-    .footer-social { display: flex; gap: 20px; }
-    .footer-social a {
-      color: var(--muted); font-size: 13px; font-weight: 300;
-      text-decoration: none; letter-spacing: 0.06em;
-      transition: color 0.2s;
-    }
-    .footer-social a:hover { color: var(--white); }
-    .footer-copy {
-      font-size: 12px; font-weight: 300;
-      color: rgba(240,237,232,0.25);
+    .route-card-en {
+      font-size: 11px; font-weight: 300; color: var(--muted);
       letter-spacing: 0.06em;
     }
+    .route-card-plus {
+      position: absolute; bottom: 14px; right: 14px;
+      width: 28px; height: 28px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: var(--white); font-weight: 300;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .route-card:hover .route-card-plus { border-color: var(--yellow); color: var(--yellow); }
 
-    /* ─── MOBILE ─── */
+    /* CTA CARDS */
+    .cta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .cta-card {
+      position: relative; border-radius: 6px; overflow: hidden;
+      aspect-ratio: 4/3; text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .cta-card:hover { border-color: var(--yellow); transform: translateY(-4px); }
+    .cta-card-bg {
+      width: 100%; height: 100%;
+      display: block;
+    }
+    .cta-card-bg-ride   { background: linear-gradient(135deg, #0d1a2e 0%, #1a3a5c 100%); }
+    .cta-card-bg-donate { background: linear-gradient(135deg, #1a0d2e 0%, #3a1a5c 100%); }
+    .cta-card-bg-merch  { background: linear-gradient(135deg, #0d2e1a 0%, #1a5c3a 100%); }
+    .cta-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,11,20,0.92) 0%, rgba(13,11,20,0.2) 60%, transparent 100%);
+    }
+    .cta-card-label {
+      position: absolute; top: 12px; left: 12px;
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(13,11,20,0.75);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 4px 10px; border-radius: 2px;
+      font-size: 10px; font-weight: 600; letter-spacing: 0.18em;
+      color: var(--white); text-transform: uppercase;
+    }
+    .cta-card-label-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .cta-card-label-dot-blue   { background: #4a9eff; }
+    .cta-card-label-dot-purple { background: #c84aff; }
+    .cta-card-label-dot-green  { background: #4aff9e; }
+    .cta-card-body { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; }
+    .cta-card-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.08em; color: var(--white); margin-bottom: 4px; }
+    .cta-card-desc { font-size: 12px; font-weight: 300; color: var(--muted); line-height: 1.6; }
+    .cta-card-plus {
+      position: absolute; bottom: 14px; right: 14px;
+      width: 28px; height: 28px;
+      border: 1px solid rgba(255,255,255,0.3); border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: var(--white); font-weight: 300;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .cta-card:hover .cta-card-plus { border-color: var(--yellow); color: var(--yellow); }
+
+    /* FUNDRAISING */
+    .fund-wrap { max-width: 700px; }
+    .fund-numbers { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+    .fund-current { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 56px); color: var(--white); letter-spacing: 0.04em; }
+    .fund-goal { font-size: 14px; font-weight: 300; color: var(--muted); }
+    .fund-track { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-bottom: 10px; }
+    .fund-fill { height: 100%; background: var(--yellow); border-radius: 2px; width: 0%; transition: width 1.5s cubic-bezier(0.4,0,0.2,1); }
+    .fund-pct { font-size: 13px; font-weight: 300; color: var(--yellow); }
+
+    /* ABOUT */
+    .about-body { font-size: 16px; font-weight: 300; color: rgba(240,237,232,0.75); line-height: 1.9; margin-top: 8px; max-width: 620px; }
+    .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; max-width: 500px; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: var(--yellow); letter-spacing: 0.04em; line-height: 1; }
+    .stat-label { font-size: 13px; font-weight: 300; color: var(--muted); margin-top: 4px; }
+
+    /* FOOTER */
+    footer { padding: 50px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.12em; color: var(--yellow); text-decoration: none; }
+    .footer-social { display: flex; gap: 20px; }
+    .footer-social a { color: var(--muted); font-size: 13px; font-weight: 300; text-decoration: none; letter-spacing: 0.06em; transition: color 0.2s; }
+    .footer-social a:hover { color: var(--white); }
+    .footer-copy { font-size: 12px; font-weight: 300; color: rgba(240,237,232,0.25); letter-spacing: 0.06em; }
+
+    /* MOBILE */
     @media (max-width: 600px) {
       nav { padding: 16px 20px; }
       .nav-links { display: none; }
-      .countdown-section, .fund-section,
-      .cta-section, .about-section { padding: 50px 20px; }
+      .section-wrap { padding: 50px 20px; }
+      .countdown-section { padding: 50px 20px; }
       .about-stats { grid-template-columns: repeat(3, 1fr); gap: 12px; }
       footer { padding: 40px 20px; flex-direction: column; align-items: flex-start; }
     }
 
-    /* ─── FADE IN ─── */
-    .fade-in {
-      opacity: 0; transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
+    /* FADE IN */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
@@ -314,7 +212,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">CMU CHARITY CYCLING</a>
+  <a href="index.html" class="nav-logo">CMU CHARITY CYCLING</a>
   <ul class="nav-links">
     <li><a href="order.html">สั่งซื้อ</a></li>
     <li><a href="status.html">เช็คสถานะ</a></li>
@@ -327,8 +225,7 @@
 <section class="hero">
   <div class="hero-video-wrap">
     <iframe src="https://www.youtube.com/embed/uzlBo4--Szo?autoplay=1&mute=1&loop=1&playlist=uzlBo4--Szo&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-      allow="autoplay; encrypted-media" allowfullscreen>
-    </iframe>
+      allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -357,43 +254,144 @@
   </div>
 </section>
 
-<!-- FUNDRAISING -->
-<section class="fund-section fade-in">
-  <p class="section-eyebrow">ยอดระดมทุน</p>
-  <div class="fund-numbers">
-    <div class="fund-current">฿0</div>
-    <div class="fund-goal">เป้าหมาย ฿3,000,000</div>
+<!-- ROUTE -->
+<section class="section-wrap fade-in">
+  <p class="section-eyebrow">เส้นทาง</p>
+  <h2 class="section-title">6 วัน · 800 กิโลเมตร</h2>
+  <div class="route-grid">
+
+    <div class="route-card">
+      <div class="route-card-img route-card-bg-1" style="background:linear-gradient(135deg,#0d1a1a 0%,#1a3a3a 100%);width:100%;height:100%;"></div>
+      <div class="route-card-overlay"></div>
+      <div class="route-card-label"><div class="route-card-label-dot"></div>DAY 1</div>
+      <div class="route-card-body">
+        <div class="route-card-day">SAT 14 NOV</div>
+        <div class="route-card-route">กรุงเทพฯ → ลพบุรี</div>
+        <div class="route-card-en">Toyota Buzz Viphavadee Bangkok – Lopburi</div>
+      </div>
+      <div class="route-card-plus">+</div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-card-img" style="background:linear-gradient(135deg,#1a1a0d 0%,#3a3a1a 100%);width:100%;height:100%;"></div>
+      <div class="route-card-overlay"></div>
+      <div class="route-card-label"><div class="route-card-label-dot"></div>DAY 2</div>
+      <div class="route-card-body">
+        <div class="route-card-day">SUN 15 NOV</div>
+        <div class="route-card-route">ลพบุรี → นครสวรรค์</div>
+        <div class="route-card-en">Lopburi – Nakhon Sawan</div>
+      </div>
+      <div class="route-card-plus">+</div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-card-img" style="background:linear-gradient(135deg,#0d1a0d 0%,#1a3a2a 100%);width:100%;height:100%;"></div>
+      <div class="route-card-overlay"></div>
+      <div class="route-card-label"><div class="route-card-label-dot"></div>DAY 3</div>
+      <div class="route-card-body">
+        <div class="route-card-day">MON 16 NOV</div>
+        <div class="route-card-route">นครสวรรค์ → กำแพงเพชร</div>
+        <div class="route-card-en">Nakhon Sawan – Kamphaeng Phet</div>
+      </div>
+      <div class="route-card-plus">+</div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-card-img" style="background:linear-gradient(135deg,#1a0d0d 0%,#3a2a1a 100%);width:100%;height:100%;"></div>
+      <div class="route-card-overlay"></div>
+      <div class="route-card-label"><div class="route-card-label-dot"></div>DAY 4</div>
+      <div class="route-card-body">
+        <div class="route-card-day">TUE 17 NOV</div>
+        <div class="route-card-route">กำแพงเพชร → ตาก</div>
+        <div class="route-card-en">Kamphaeng Phet – Tak</div>
+      </div>
+      <div class="route-card-plus">+</div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-card-img" style="background:linear-gradient(135deg,#0d0d1a 0%,#1a2a3a 100%);width:100%;height:100%;"></div>
+      <div class="route-card-overlay"></div>
+      <div class="route-card-label"><div class="route-card-label-dot"></div>DAY 5</div>
+      <div class="route-card-body">
+        <div class="route-card-day">WED 18 NOV</div>
+        <div class="route-card-route">ตาก → ลำปาง</div>
+        <div class="route-card-en">Tak – Lampang</div>
+      </div>
+      <div class="route-card-plus">+</div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-card-img" style="background:linear-gradient(135deg,#1a0d1a 0%,#2c263f 100%);width:100%;height:100%;"></div>
+      <div class="route-card-overlay"></div>
+      <div class="route-card-label"><div class="route-card-label-dot" style="background:#f1c40f;"></div>FINISH</div>
+      <div class="route-card-body">
+        <div class="route-card-day">THU 19 NOV</div>
+        <div class="route-card-route">ลำปาง → เชียงใหม่</div>
+        <div class="route-card-en">Lampang – Chiang Mai University</div>
+      </div>
+      <div class="route-card-plus">+</div>
+    </div>
+
   </div>
-  <div class="fund-track">
-    <div class="fund-fill" id="fund-fill"></div>
-  </div>
-  <p class="fund-pct" id="fund-pct">0% ของเป้าหมาย</p>
 </section>
 
 <!-- CTA -->
-<section class="cta-section fade-in">
+<section class="section-wrap fade-in">
   <p class="section-eyebrow">ร่วมสนับสนุน</p>
+  <h2 class="section-title">เข้าร่วมกับเรา</h2>
   <div class="cta-grid">
+
     <a href="#" class="cta-card">
-      <span class="cta-card-icon">🚴</span>
-      <div class="cta-card-title">สมัครปั่น</div>
-      <div class="cta-card-desc">เข้าร่วมทีมนักปั่นกว่า 60 คน ในการเดินทาง 800 กม.</div>
+      <div class="cta-card-bg cta-card-bg-ride" style="width:100%;height:100%;"></div>
+      <div class="cta-card-overlay"></div>
+      <div class="cta-card-label"><div class="cta-card-label-dot cta-card-label-dot-blue"></div>REGISTER</div>
+      <div class="cta-card-body">
+        <div class="cta-card-title">สมัครปั่น</div>
+        <div class="cta-card-desc">เข้าร่วมทีมนักปั่นกว่า 60 คน<br>ในการเดินทาง 800 กม.</div>
+      </div>
+      <div class="cta-card-plus">+</div>
     </a>
+
     <a href="#" class="cta-card">
-      <span class="cta-card-icon">❤️</span>
-      <div class="cta-card-title">บริจาค</div>
-      <div class="cta-card-desc">ร่วมระดมทุนเพื่อมอบโอกาสทางการศึกษาให้น้องๆ</div>
+      <div class="cta-card-bg cta-card-bg-donate" style="width:100%;height:100%;"></div>
+      <div class="cta-card-overlay"></div>
+      <div class="cta-card-label"><div class="cta-card-label-dot cta-card-label-dot-purple"></div>DONATE</div>
+      <div class="cta-card-body">
+        <div class="cta-card-title">บริจาค</div>
+        <div class="cta-card-desc">ร่วมระดมทุนเพื่อมอบโอกาส<br>ทางการศึกษาให้น้องๆ</div>
+      </div>
+      <div class="cta-card-plus">+</div>
     </a>
+
     <a href="order.html" class="cta-card">
-      <span class="cta-card-icon">👕</span>
-      <div class="cta-card-title">ของที่ระลึก</div>
-      <div class="cta-card-desc">สั่งซื้อเสื้อและของที่ระลึกจากงานปั่นครั้งที่ 9</div>
+      <div class="cta-card-bg cta-card-bg-merch" style="width:100%;height:100%;"></div>
+      <div class="cta-card-overlay"></div>
+      <div class="cta-card-label"><div class="cta-card-label-dot cta-card-label-dot-green"></div>MERCH</div>
+      <div class="cta-card-body">
+        <div class="cta-card-title">ของที่ระลึก</div>
+        <div class="cta-card-desc">สั่งซื้อเสื้อและของที่ระลึก<br>จากงานปั่นครั้งที่ 9</div>
+      </div>
+      <div class="cta-card-plus">+</div>
     </a>
+
+  </div>
+</section>
+
+<!-- FUNDRAISING -->
+<section class="section-wrap fade-in">
+  <div class="fund-wrap">
+    <p class="section-eyebrow">ยอดระดมทุน</p>
+    <div class="fund-numbers">
+      <div class="fund-current">฿0</div>
+      <div class="fund-goal">เป้าหมาย ฿3,000,000</div>
+    </div>
+    <div class="fund-track"><div class="fund-fill" id="fund-fill"></div></div>
+    <p class="fund-pct" id="fund-pct">0% ของเป้าหมาย</p>
   </div>
 </section>
 
 <!-- ABOUT -->
-<section class="about-section fade-in">
+<section class="section-wrap fade-in">
   <p class="section-eyebrow">เกี่ยวกับงาน</p>
   <p class="about-body">
     CMU Charity Cycling คือการรวมตัวของศิษย์เก่าและมิตรสหายมหาวิทยาลัยเชียงใหม่
@@ -402,24 +400,15 @@
     ภายใต้การดูแลของสมาคมนักศึกษาเก่ามหาวิทยาลัยเชียงใหม่
   </p>
   <div class="about-stats">
-    <div>
-      <div class="stat-num">800+</div>
-      <div class="stat-label">กิโลเมตร</div>
-    </div>
-    <div>
-      <div class="stat-num">6</div>
-      <div class="stat-label">วัน</div>
-    </div>
-    <div>
-      <div class="stat-num">60+</div>
-      <div class="stat-label">นักปั่น</div>
-    </div>
+    <div><div class="stat-num">800+</div><div class="stat-label">กิโลเมตร</div></div>
+    <div><div class="stat-num">6</div><div class="stat-label">วัน</div></div>
+    <div><div class="stat-num">60+</div><div class="stat-label">นักปั่น</div></div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <a href="#" class="footer-logo">CMU CHARITY CYCLING</a>
+  <a href="index.html" class="footer-logo">CMU CHARITY CYCLING</a>
   <div class="footer-social">
     <a href="https://www.facebook.com/CMUCYCLING3/" target="_blank">Facebook</a>
     <a href="https://lin.ee/PllKgPt" target="_blank">Line OA</a>
@@ -452,11 +441,9 @@
     document.getElementById("fund-fill").style.width = pct + "%";
   }, 600);
 
-  // Fade in on scroll
+  // Fade in
   var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      if (e.isIntersecting) { e.target.classList.add("visible"); }
-    });
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add("visible"); });
   }, { threshold: 0.1 });
   document.querySelectorAll(".fade-in").forEach(function(el) { obs.observe(el); });
 </script>
