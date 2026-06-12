@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMU Charity Cycling — ปั่นเพื่อน้อง</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark:    #0d0b14;
+      --purple:  #2c263f;
+      --yellow:  #f1c40f;
+      --yellow2: #e6b800;
+      --white:   #f0ede8;
+      --muted:   rgba(240,237,232,0.5);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: linear-gradient(to bottom, rgba(13,11,20,0.95), transparent);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; letter-spacing: 0.12em;
+      color: var(--yellow);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: var(--muted); font-size: 14px; font-weight: 300;
+      text-decoration: none; letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--yellow); color: var(--dark);
+      padding: 8px 20px; border-radius: 4px;
+      font-size: 14px; font-weight: 600;
+      text-decoration: none; letter-spacing: 0.04em;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--yellow2); }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative; width: 100%; height: 100vh;
+      overflow: hidden; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .hero-video-wrap {
+      position: absolute; inset: 0;
+      pointer-events: none;
+    }
+    .hero-video-wrap iframe {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 177.78vh; min-width: 100%;
+      height: 56.25vw; min-height: 100%;
+      transform: translate(-50%, -50%);
+      border: none;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(13,11,20,0.3) 0%,
+        rgba(13,11,20,0.5) 60%,
+        rgba(13,11,20,1) 100%
+      );
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center; padding: 0 20px;
+    }
+    .hero-badge {
+      display: inline-block;
+      border: 1px solid rgba(241,196,15,0.4);
+      color: var(--yellow);
+      font-size: 12px; font-weight: 300; letter-spacing: 0.2em;
+      padding: 5px 16px; border-radius: 2px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(56px, 10vw, 120px);
+      line-height: 0.95; letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .hero-title span { color: var(--yellow); }
+    .hero-sub {
+      font-size: clamp(14px, 2vw, 18px);
+      font-weight: 300; color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 36px;
+    }
+    .hero-buttons {
+      display: flex; gap: 12px;
+      justify-content: center; flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--yellow); color: var(--dark);
+      padding: 13px 32px; border-radius: 4px;
+      font-family: 'Kanit'; font-size: 15px; font-weight: 600;
+      text-decoration: none; letter-spacing: 0.04em;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--yellow2); transform: translateY(-2px); }
+    .btn-ghost {
+      border: 1px solid rgba(240,237,232,0.35); color: var(--white);
+      padding: 13px 32px; border-radius: 4px;
+      font-family: 'Kanit'; font-size: 15px; font-weight: 300;
+      text-decoration: none; letter-spacing: 0.04em;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--white); transform: translateY(-2px); }
+
+    /* ─── COUNTDOWN ─── */
+    .countdown-section {
+      padding: 60px 40px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .cd-eyebrow {
+      font-size: 11px; font-weight: 300; letter-spacing: 0.25em;
+      color: var(--yellow); text-transform: uppercase; margin-bottom: 20px;
+    }
+    .cd-date {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(28px, 5vw, 48px);
+      letter-spacing: 0.06em; color: var(--white);
+      margin-bottom: 32px;
+    }
+    .cd-boxes {
+      display: flex; justify-content: center;
+      gap: clamp(8px, 2vw, 20px); flex-wrap: wrap;
+    }
+    .cd-box {
+      min-width: clamp(64px, 12vw, 90px);
+      padding: 14px 10px;
+      border: 1px solid rgba(241,196,15,0.2);
+      border-radius: 4px;
+      background: rgba(241,196,15,0.04);
+    }
+    .cd-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 6vw, 52px);
+      color: var(--yellow); line-height: 1;
+    }
+    .cd-unit {
+      font-size: 11px; font-weight: 300;
+      color: var(--muted); letter-spacing: 0.12em;
+      margin-top: 4px;
+    }
+    .cd-sep {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 6vw, 52px);
+      color: rgba(241,196,15,0.3);
+      align-self: flex-start; padding-top: 14px;
+    }
+
+    /* ─── FUNDRAISING ─── */
+    .fund-section {
+      max-width: 700px; margin: 0 auto;
+      padding: 70px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .section-eyebrow {
+      font-size: 11px; font-weight: 300; letter-spacing: 0.25em;
+      color: var(--yellow); text-transform: uppercase; margin-bottom: 12px;
+    }
+    .fund-numbers {
+      display: flex; justify-content: space-between;
+      align-items: baseline; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
+    }
+    .fund-current {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 6vw, 56px);
+      color: var(--white); letter-spacing: 0.04em;
+    }
+    .fund-goal {
+      font-size: 14px; font-weight: 300; color: var(--muted);
+    }
+    .fund-track {
+      height: 4px; background: rgba(255,255,255,0.1);
+      border-radius: 2px; overflow: hidden; margin-bottom: 10px;
+    }
+    .fund-fill {
+      height: 100%; background: var(--yellow);
+      border-radius: 2px; width: 0%;
+      transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+    }
+    .fund-pct {
+      font-size: 13px; font-weight: 300; color: var(--yellow);
+    }
+
+    /* ─── CTA GRID ─── */
+    .cta-section {
+      max-width: 900px; margin: 0 auto;
+      padding: 70px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .cta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px; margin-top: 32px;
+    }
+    .cta-card {
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px; padding: 28px 24px;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+    .cta-card:hover {
+      border-color: var(--yellow);
+      background: rgba(241,196,15,0.04);
+      transform: translateY(-4px);
+    }
+    .cta-card-icon {
+      font-size: 28px; margin-bottom: 14px; display: block;
+    }
+    .cta-card-title {
+      font-size: 18px; font-weight: 600; color: var(--white);
+      margin-bottom: 6px;
+    }
+    .cta-card-desc {
+      font-size: 13px; font-weight: 300; color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── ABOUT ─── */
+    .about-section {
+      max-width: 700px; margin: 0 auto;
+      padding: 70px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .about-body {
+      font-size: 16px; font-weight: 300;
+      color: rgba(240,237,232,0.75);
+      line-height: 1.9; margin-top: 20px;
+    }
+    .about-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 40px;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px; color: var(--yellow);
+      letter-spacing: 0.04em; line-height: 1;
+    }
+    .stat-label {
+      font-size: 13px; font-weight: 300;
+      color: var(--muted); margin-top: 4px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 50px 40px;
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 20px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px; letter-spacing: 0.12em;
+      color: var(--yellow); text-decoration: none;
+    }
+    .footer-social { display: flex; gap: 20px; }
+    .footer-social a {
+      color: var(--muted); font-size: 13px; font-weight: 300;
+      text-decoration: none; letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+    .footer-social a:hover { color: var(--white); }
+    .footer-copy {
+      font-size: 12px; font-weight: 300;
+      color: rgba(240,237,232,0.25);
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .countdown-section, .fund-section,
+      .cta-section, .about-section { padding: 50px 20px; }
+      .about-stats { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      footer { padding: 40px 20px; flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ─── FADE IN ─── */
+    .fade-in {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">CMU CHARITY CYCLING</a>
+  <ul class="nav-links">
+    <li><a href="order.html">สั่งซื้อ</a></li>
+    <li><a href="status.html">เช็คสถานะ</a></li>
+    <li><a href="riders.html">นักปั่น</a></li>
+  </ul>
+  <a href="order.html" class="nav-cta">สั่งของที่ระลึก</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-video-wrap">
+    <iframe src="https://www.youtube.com/embed/uzlBo4--Szo?autoplay=1&mute=1&loop=1&playlist=uzlBo4--Szo&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+      allow="autoplay; encrypted-media" allowfullscreen>
+    </iframe>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">9th Edition · พฤศจิกายน 2569</div>
+    <h1 class="hero-title">ปั่น<span>เพื่อ</span>น้อง</h1>
+    <p class="hero-sub">กรุงเทพฯ → มหาวิทยาลัยเชียงใหม่ &nbsp;·&nbsp; ~800 กม. &nbsp;·&nbsp; 14–19 พ.ย. 2569</p>
+    <div class="hero-buttons">
+      <a href="#" class="btn-primary">สมัครเข้าร่วม</a>
+      <a href="order.html" class="btn-ghost">สั่งของที่ระลึก</a>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<section class="countdown-section fade-in">
+  <p class="cd-eyebrow">นับถอยหลังสู่วันเริ่มปั่น</p>
+  <p class="cd-date">14 NOVEMBER 2026</p>
+  <div class="cd-boxes" id="cd-boxes">
+    <div class="cd-box"><div class="cd-num" id="cd-days">--</div><div class="cd-unit">วัน</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-box"><div class="cd-num" id="cd-hours">--</div><div class="cd-unit">ชั่วโมง</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-box"><div class="cd-num" id="cd-mins">--</div><div class="cd-unit">นาที</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-box"><div class="cd-num" id="cd-secs">--</div><div class="cd-unit">วินาที</div></div>
+  </div>
+</section>
+
+<!-- FUNDRAISING -->
+<section class="fund-section fade-in">
+  <p class="section-eyebrow">ยอดระดมทุน</p>
+  <div class="fund-numbers">
+    <div class="fund-current">฿0</div>
+    <div class="fund-goal">เป้าหมาย ฿3,000,000</div>
+  </div>
+  <div class="fund-track">
+    <div class="fund-fill" id="fund-fill"></div>
+  </div>
+  <p class="fund-pct" id="fund-pct">0% ของเป้าหมาย</p>
+</section>
+
+<!-- CTA -->
+<section class="cta-section fade-in">
+  <p class="section-eyebrow">ร่วมสนับสนุน</p>
+  <div class="cta-grid">
+    <a href="#" class="cta-card">
+      <span class="cta-card-icon">🚴</span>
+      <div class="cta-card-title">สมัครปั่น</div>
+      <div class="cta-card-desc">เข้าร่วมทีมนักปั่นกว่า 60 คน ในการเดินทาง 800 กม.</div>
+    </a>
+    <a href="#" class="cta-card">
+      <span class="cta-card-icon">❤️</span>
+      <div class="cta-card-title">บริจาค</div>
+      <div class="cta-card-desc">ร่วมระดมทุนเพื่อมอบโอกาสทางการศึกษาให้น้องๆ</div>
+    </a>
+    <a href="order.html" class="cta-card">
+      <span class="cta-card-icon">👕</span>
+      <div class="cta-card-title">ของที่ระลึก</div>
+      <div class="cta-card-desc">สั่งซื้อเสื้อและของที่ระลึกจากงานปั่นครั้งที่ 9</div>
+    </a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section fade-in">
+  <p class="section-eyebrow">เกี่ยวกับงาน</p>
+  <p class="about-body">
+    CMU Charity Cycling คือการรวมตัวของศิษย์เก่าและมิตรสหายมหาวิทยาลัยเชียงใหม่
+    เพื่อปั่นจักรยานระยะทางกว่า 800 กิโลเมตรจากกรุงเทพฯ สู่เชียงใหม่
+    ระดมทุนมอบโอกาสทางการศึกษาให้กับเด็กนักเรียนที่ขาดแคลน
+    ภายใต้การดูแลของสมาคมนักศึกษาเก่ามหาวิทยาลัยเชียงใหม่
+  </p>
+  <div class="about-stats">
+    <div>
+      <div class="stat-num">800+</div>
+      <div class="stat-label">กิโลเมตร</div>
+    </div>
+    <div>
+      <div class="stat-num">6</div>
+      <div class="stat-label">วัน</div>
+    </div>
+    <div>
+      <div class="stat-num">60+</div>
+      <div class="stat-label">นักปั่น</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">CMU CHARITY CYCLING</a>
+  <div class="footer-social">
+    <a href="https://www.facebook.com/CMUCYCLING3/" target="_blank">Facebook</a>
+    <a href="https://lin.ee/PllKgPt" target="_blank">Line OA</a>
+  </div>
+  <p class="footer-copy">© 2569 สมาคมนักศึกษาเก่า มหาวิทยาลัยเชียงใหม่</p>
+</footer>
+
+<script>
+  // Countdown
+  var target = new Date("2026-11-14T00:00:00");
+  function tick() {
+    var diff = target - new Date();
+    if (diff <= 0) {
+      document.getElementById("cd-boxes").innerHTML = '<p style="font-family:\'Bebas Neue\',sans-serif;font-size:36px;color:var(--yellow);letter-spacing:0.08em;">เริ่มปั่นแล้ว!</p>';
+      return;
+    }
+    document.getElementById("cd-days").innerText  = Math.floor(diff / 86400000);
+    document.getElementById("cd-hours").innerText = Math.floor(diff % 86400000 / 3600000);
+    document.getElementById("cd-mins").innerText  = Math.floor(diff % 3600000 / 60000);
+    document.getElementById("cd-secs").innerText  = Math.floor(diff % 60000 / 1000);
+  }
+  tick(); setInterval(tick, 1000);
+
+  // Progress bar
+  var current = 0;
+  var goal = 3000000;
+  var pct = Math.round(current / goal * 100);
+  document.getElementById("fund-pct").innerText = pct + "% ของเป้าหมาย";
+  setTimeout(function() {
+    document.getElementById("fund-fill").style.width = pct + "%";
+  }, 600);
+
+  // Fade in on scroll
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add("visible"); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll(".fade-in").forEach(function(el) { obs.observe(el); });
+</script>
+</body>
+</html>
