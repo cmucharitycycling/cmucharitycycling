@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เช็คสถานะการสั่งซื้อ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #2c263f; --accent: #f1c40f; --success: #27ae60; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Kanit', sans-serif; background: #2c263f; margin: 0; padding: 20px; }
+
+    .container { max-width: 700px; margin: auto; }
+
+    .search-box {
+      background: white; border-radius: 16px; padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin-bottom: 20px; text-align: center;
+    }
+    .search-box h2 { color: var(--primary); font-size: 24px; margin: 0 0 8px 0; }
+    .search-box p  { color: #777; font-size: 15px; margin: 0 0 20px 0; }
+
+    .search-row { display: flex; gap: 10px; }
+    .search-input {
+      flex: 1; padding: 14px 16px; border: 2px solid #ddd; border-radius: 10px;
+      font-family: 'Kanit'; font-size: 16px; outline: none; transition: 0.2s;
+    }
+    .search-input:focus { border-color: var(--accent); }
+    .btn-search {
+      padding: 14px 24px; background: var(--primary); color: var(--accent);
+      border: none; border-radius: 10px; font-family: 'Kanit'; font-size: 16px;
+      font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s;
+    }
+    .btn-search:hover { background: #3d3560; }
+    .btn-search:disabled { background: #aaa; cursor: not-allowed; }
+
+    /* Cards */
+    .result-card {
+      background: white; border-radius: 14px; padding: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2); margin-bottom: 15px;
+      border-left: 5px solid var(--accent); animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .card-name   { font-size: 20px; font-weight: 600; color: var(--primary); }
+    .card-total  { background: var(--primary); color: var(--accent); padding: 6px 14px; border-radius: 20px; font-size: 16px; font-weight: 600; }
+
+    .card-row    { display: flex; gap: 8px; margin-bottom: 6px; font-size: 15px; flex-wrap: wrap; }
+    .card-label  { color: #999; min-width: 80px; }
+    .card-value  { color: #333; flex: 1; }
+
+    .badge-date  { font-size: 13px; color: #aaa; margin-top: 10px; text-align: right; }
+
+    .empty-state { text-align:center; color: #aaa; padding: 50px 20px; font-size: 18px; }
+    .empty-state .icon { font-size: 50px; margin-bottom: 10px; }
+
+    .loading { text-align:center; color: var(--accent); padding: 40px; font-size: 18px; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="search-box">
+    <h2>🔍 เช็คสถานะการสั่งซื้อเสื้อ ปั่น/คอกลม</h2>
+    <p>พิมพ์ชื่อ-นามสกุล หรือ เบอร์โทรศัพท์ที่ใช้สั่งซื้อ</p>
+    <div class="search-row">
+      <input type="text" id="keyword" class="search-input" placeholder="เช่น สมชาย หรือ 08xxxxxxxx">
+      <button onclick="search()" id="btnSearch" class="btn-search">ค้นหา</button>
+    </div>
+  </div>
+
+  <div id="result-area"></div>
+
+</div>
+
+<script>
+  // 🔴 แก้ตรงนี้: ใส่ URL เดียวกับฟอร์มสั่งซื้อ
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxZQNXxfwmLYXH8sUnFMnVKDjbA_bU47_g4CHW4My-PmAB0PF2YRyP0W-W64AxRJQRZ/exec";
+
+  document.getElementById('keyword').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') search();
+  });
+
+  async function search() {
+    const keyword = document.getElementById('keyword').value.trim();
+    if (!keyword) return alert("กรุณาพิมพ์ชื่อหรือเบอร์โทรก่อนค้นหา");
+
+    const btn  = document.getElementById('btnSearch');
+    const area = document.getElementById('result-area');
+
+    btn.disabled  = true;
+    btn.innerText = "⏳ กำลังค้นหา...";
+    area.innerHTML = `<div class="loading">🔄 กำลังโหลดข้อมูล...</div>`;
+
+    try {
+      const url = `${WEB_APP_URL}?search=${encodeURIComponent(keyword)}`;
+      const res  = await fetch(url);
+      const data = await res.json();
+
+      if (!data.length) {
+        area.innerHTML = `
+          <div class="result-card" style="border-left-color:#e74c3c;">
+            <div class="empty-state">
+              <div class="icon">🔎</div>
+              <div>ไม่พบข้อมูลการสั่งซื้อ<br>
+              <span style="font-size:14px; color:#bbb;">กรุณาตรวจสอบชื่อหรือเบอร์โทรให้ถูกต้อง</span></div>
+            </div>
+          </div>`;
+        return;
+      }
+
+      area.innerHTML = `<div style="color:#aaa; font-size:14px; margin-bottom:10px; text-align:right;">พบ ${data.length} รายการ</div>`;
+
+      data.forEach(order => {
+        // แยกรายการสินค้าให้อ่านง่าย
+        const itemLines = order.details.split("),").map((d, i, arr) => 
+  `<li style="margin:3px 0;">${d.trim()}${i < arr.length - 1 ? ')' : ''}</li>`
+).join("");
+
+        area.innerHTML += `
+          <div class="result-card">
+            <div class="card-header">
+              <div class="card-name">👤 ${order.name}</div>
+              <div class="card-total">💰 ${Number(order.total).toLocaleString()} บาท</div>
+            </div>
+            <div class="card-row">
+              <span class="card-label">📱 เบอร์โทร</span>
+              <span class="card-value">${order.tel}</span>
+            </div>
+            <div class="card-row">
+              <span class="card-label">🛍️ รายการ</span>
+              <span class="card-value"><ul style="margin:0; padding-left:18px;">${itemLines}</ul></span>
+            </div>
+            ${order.address ? `
+            <div class="card-row">
+              <span class="card-label">📦 ที่อยู่</span>
+              <span class="card-value">${order.address}</span>
+            </div>` : ''}
+            <div class="badge-date">🕐 สั่งซื้อเมื่อ ${order.date}</div>
+          </div>`;
+      });
+
+    } catch (err) {
+      area.innerHTML = `
+        <div class="result-card" style="border-left-color:#e74c3c;">
+          <div class="empty-state">
+            <div class="icon">⚠️</div>
+            <div>เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง</div>
+          </div>
+        </div>`;
+    } finally {
+      btn.disabled  = false;
+      btn.innerText = "ค้นหา";
+    }
+  }
+</script>
+</body>
+</html>
