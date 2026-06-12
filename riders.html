@@ -3,111 +3,192 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ทะเบียนนักปั่น CMU Cycling</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>ทะเบียนนักปั่น — CMU Charity Cycling</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;600;700&family=IBM+Plex+Sans+Thai+Condensed:wght@700&display=swap" rel="stylesheet">
   <style>
-    :root { --primary: #2c263f; --accent: #f1c40f; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Kanit', sans-serif; background: var(--primary); padding: 20px; }
+    :root {
+      --dark:   #0d0b14;
+      --purple: #2c263f;
+      --yellow: #f1c40f;
+      --yellow2:#e6b800;
+      --white:  #f0ede8;
+      --muted:  rgba(240,237,232,0.5);
+      --border: rgba(255,255,255,0.08);
+      --card:   rgba(255,255,255,0.04);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'IBM Plex Sans Thai', sans-serif; background: var(--dark); color: var(--white); min-height: 100vh; padding-top: 80px; }
 
-    /* Header */
-    .header { text-align: center; padding: 30px 20px 25px; }
-    .header h1 { font-size: 26px; color: var(--accent); margin-bottom: 5px; }
-    .header p  { color: #aaa; font-size: 14px; }
-    .counter   { display: inline-block; background: var(--accent); color: var(--primary);
-                 font-weight: 700; padding: 5px 16px; border-radius: 20px; font-size: 15px; margin-top: 10px; }
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 40px; background: rgba(13,11,20,0.95); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: 22px; letter-spacing: 0.12em; color: var(--yellow); text-decoration: none; font-weight: 700; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { color: var(--muted); font-size: 14px; font-weight: 300; text-decoration: none; letter-spacing: 0.06em; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-cta { background: var(--yellow); color: var(--dark); padding: 8px 20px; border-radius: 4px; font-size: 14px; font-weight: 600; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: var(--yellow2); }
 
-    /* Filter bar */
-    .filter-bar { max-width: 1000px; margin: 0 auto 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+    /* PAGE HEADER */
+    .page-header { max-width: 1000px; margin: 0 auto; padding: 50px 40px 30px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .page-eyebrow { font-size: 11px; font-weight: 300; letter-spacing: 0.25em; color: var(--yellow); text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .page-eyebrow::before { content: '◈'; font-size: 12px; }
+    .page-title { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: clamp(32px, 5vw, 56px); letter-spacing: 0.04em; color: var(--white); font-weight: 700; }
+    .counter {
+      font-family: 'IBM Plex Sans Thai Condensed', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.12em;
+      background: rgba(241,196,15,0.1); border: 1px solid rgba(241,196,15,0.2);
+      color: var(--yellow); padding: 6px 16px; border-radius: 3px;
+      white-space: nowrap; display: flex; align-items: center; gap: 6px;
+    }
+    .counter::before { content: '◎'; font-size: 11px; }
+
+    /* FILTER BAR */
+    .filter-bar { max-width: 1000px; margin: 0 auto; padding: 20px 40px; display: flex; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+
+    .filter-search-wrap {
+      flex: 1; min-width: 200px; position: relative;
+    }
+    .filter-search-icon {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      font-size: 13px; color: var(--yellow); opacity: 0.6; pointer-events: none;
+    }
     .filter-input {
-      flex: 1; min-width: 200px; padding: 10px 16px;
-      border: 2px solid rgba(255,255,255,0.15); border-radius: 10px;
-      background: rgba(255,255,255,0.08); color: white;
-      font-family: 'Kanit'; font-size: 15px; outline: none;
+      width: 100%; padding: 10px 16px 10px 32px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 4px; color: var(--white);
+      font-family: 'IBM Plex Sans Thai'; font-size: 14px; outline: none;
+      transition: border-color 0.2s;
     }
-    .filter-input::placeholder { color: #aaa; }
-    .filter-input:focus { border-color: var(--accent); }
+    .filter-input:focus { border-color: var(--yellow); }
+    .filter-input::placeholder { color: rgba(255,255,255,0.2); }
+
+    .filter-select-wrap { position: relative; }
+    .filter-select-icon {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      font-size: 11px; color: var(--yellow); opacity: 0.6; pointer-events: none;
+      font-weight: 700; letter-spacing: -0.05em;
+    }
     .filter-select {
-      padding: 10px 16px; border: 2px solid rgba(255,255,255,0.15); border-radius: 10px;
-      background: rgba(255,255,255,0.08); color: white;
-      font-family: 'Kanit'; font-size: 15px; outline: none; cursor: pointer;
+      padding: 10px 16px 10px 32px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 4px; color: var(--white);
+      font-family: 'IBM Plex Sans Thai'; font-size: 14px; outline: none;
+      cursor: pointer; transition: border-color 0.2s;
+      appearance: none; min-width: 150px;
     }
-    .filter-select option { background: var(--primary); color: white; }
+    .filter-select:focus { border-color: var(--yellow); }
+    .filter-select option { background: var(--dark); color: var(--white); }
 
-    /* Grid */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 14px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
+    /* GRID */
+    .grid-wrap { max-width: 1000px; margin: 0 auto; padding: 30px 40px 60px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
 
-    /* Card */
+    /* CARD */
     .card {
-      background: white; border-radius: 14px; overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      transition: transform 0.2s, box-shadow 0.2s;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
       animation: fadeUp 0.4s ease both;
     }
-    .card:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    .card:hover { border-color: rgba(241,196,15,0.3); transform: translateY(-4px); }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
 
-    .card-photo {
-      width: 100%; aspect-ratio: 1/1; object-fit: cover; object-position: top;
-      background: #ddd; display: block;
-    }
+    .card-photo { width: 100%; aspect-ratio: 1/1; object-fit: cover; object-position: top; background: var(--purple); display: block; }
     .card-placeholder {
       width: 100%; aspect-ratio: 1/1;
-      background: linear-gradient(135deg, var(--primary) 0%, #3d3560 100%);
+      background: linear-gradient(135deg, var(--purple) 0%, #1a1528 100%);
       display: flex; align-items: center; justify-content: center;
-      font-size: 52px;
     }
-    .card-body { padding: 10px 10px 12px; }
-    .card-name { font-weight: 600; color: var(--primary); font-size: 16px; line-height: 1.3; margin-bottom: 2px; }
-    .card-nickname { font-size: 14px; color: #888; margin-bottom: 6px; }
-    .card-id { font-size: 13px; color: #999; margin-bottom: 5px; }
-
-    .badge {
-      display: inline-block; font-size: 12px; font-weight: 600;
-      padding: 2px 8px; border-radius: 10px; margin: 2px 2px 0 0;
-      line-height: 1.6;
+    .card-placeholder-icon {
+      font-family: 'IBM Plex Sans Thai Condensed', sans-serif;
+      font-size: 42px; font-weight: 700;
+      color: rgba(241,196,15,0.2); letter-spacing: -0.02em;
     }
-    .badge-faculty { background: var(--primary); color: white; }
-    .badge-type    { background: #fff3cd; color: #856404; }
-    .badge-date    { background: #d1ecf1; color: #0c5460; }
 
-    /* States */
-    .loading { text-align:center; color: var(--accent); padding: 80px 20px; font-size: 18px; grid-column: 1/-1; }
-    .empty   { text-align:center; color: #aaa; padding: 80px 20px; font-size: 16px; grid-column: 1/-1; }
+    .card-body { padding: 12px; }
+    .card-name { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 2px; line-height: 1.3; }
+    .card-nickname { font-size: 12px; font-weight: 300; color: var(--muted); margin-bottom: 8px; }
+    .card-id { font-size: 11px; font-weight: 300; color: rgba(240,237,232,0.35); margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+    .card-id::before { content: '#'; color: var(--yellow); opacity: 0.5; font-weight: 700; }
+
+    .card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tag {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+      padding: 2px 7px; border-radius: 2px; text-transform: uppercase;
+    }
+    .tag-faculty { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--border); }
+    .tag-date    { background: rgba(241,196,15,0.08); color: rgba(241,196,15,0.6); border: 1px solid rgba(241,196,15,0.15); }
+
+    /* STATES */
+    .state-box { grid-column: 1/-1; background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 80px 20px; text-align: center; }
+    .state-icon { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: 48px; font-weight: 700; color: var(--yellow); opacity: 0.2; margin-bottom: 12px; letter-spacing: -0.02em; }
+    .state-text { font-size: 15px; font-weight: 300; color: var(--muted); }
+
+    .loading-text { grid-column: 1/-1; font-size: 13px; font-weight: 300; color: var(--yellow); letter-spacing: 0.15em; text-transform: uppercase; text-align: center; padding: 80px 20px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .loading-text::before { content: '◌'; animation: spin 1s linear infinite; display: inline-block; font-size: 18px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .page-header, .filter-bar, .grid-wrap { padding-left: 20px; padding-right: 20px; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    }
   </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>🚲 ทะเบียนนักปั่น CMU Charity Cycling</h1>
-  <p>ปั่นเพื่อน้อง มช. กรุงเทพฯ–เชียงใหม่</p>
-  <div class="counter" id="counter">⏳ กำลังโหลด...</div>
+<nav>
+  <a href="index.html" class="nav-logo">CMU CHARITY CYCLING</a>
+  <ul class="nav-links">
+    <li><a href="order.html">สั่งซื้อ</a></li>
+    <li><a href="status.html">เช็คสถานะ</a></li>
+    <li><a href="riders.html" class="active">นักปั่น</a></li>
+  </ul>
+  <a href="order.html" class="nav-cta">สั่งของที่ระลึก</a>
+</nav>
+
+<div class="page-header">
+  <div>
+    <p class="page-eyebrow">Riders Registry</p>
+    <h1 class="page-title">ทะเบียนนักปั่น</h1>
+  </div>
+  <div class="counter" id="counter">โหลดข้อมูล...</div>
 </div>
 
-<div class="filter-bar" style="max-width:1000px;margin:0 auto 20px;">
-  <input type="text" class="filter-input" id="searchInput" placeholder="🔍 ค้นหาชื่อ หรือ รหัสนักศึกษา..." oninput="renderCards()">
-  <select class="filter-select" id="facultyFilter" onchange="renderCards()">
-    <option value="">🎓 ทุกคณะ</option>
-  </select>
-  <select class="filter-select" id="typeFilter" onchange="renderCards()">
-    <option value="">👥 ทุกประเภท</option>
-  </select>
+<div class="filter-bar">
+  <div class="filter-search-wrap">
+    <span class="filter-search-icon">⌕</span>
+    <input type="text" class="filter-input" id="searchInput" placeholder="ค้นหาชื่อ หรือรหัสนักศึกษา..." oninput="renderCards()">
+  </div>
+  <div class="filter-select-wrap">
+    <span class="filter-select-icon">≡</span>
+    <select class="filter-select" id="facultyFilter" onchange="renderCards()">
+      <option value="">ทุกคณะ</option>
+    </select>
+  </div>
+  <div class="filter-select-wrap">
+    <span class="filter-select-icon">◈</span>
+    <select class="filter-select" id="typeFilter" onchange="renderCards()">
+      <option value="">ทุกประเภท</option>
+    </select>
+  </div>
 </div>
 
-<div class="grid" id="grid">
-  <div class="loading">⏳ กำลังโหลดข้อมูล...</div>
+<div class="grid-wrap">
+  <div class="grid" id="grid">
+    <div class="loading-text">กำลังโหลดข้อมูล</div>
+  </div>
 </div>
+
+<footer style="border-top:1px solid var(--border);padding:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;max-width:1000px;margin:0 auto;">
+  <a href="index.html" style="font-family:'IBM Plex Sans Thai Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:0.12em;color:var(--yellow);text-decoration:none;">CMU CHARITY CYCLING</a>
+  <p style="font-size:12px;font-weight:300;color:rgba(240,237,232,0.25);letter-spacing:0.06em;">© 2569 สมาคมนักศึกษาเก่า มหาวิทยาลัยเชียงใหม่</p>
+</footer>
 
 <script>
-  // 🔴 แก้ตรงนี้ใส่ URL จาก Apps Script ของ Form Sheet
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwcFk6renjBy2xcWjovf5MY6r_MtasbiQ-8nExD4jYP8JR1xmx2PCLSIQMt92Uc6n_seA/exec";
-
   let allMembers = [];
 
   async function loadMembers() {
@@ -115,71 +196,74 @@
       const res = await fetch(WEB_APP_URL);
       allMembers = await res.json();
 
-      // ✅ สร้าง filter options จากข้อมูลจริง
       const faculties = [...new Set(allMembers.map(m => m.faculty).filter(Boolean))].sort();
       faculties.push("นักปั่นอิสระ");
-      const types     = [...new Set(allMembers.map(m => m.type).filter(Boolean))].sort();
+      const types = [...new Set(allMembers.map(m => m.type).filter(Boolean))].sort();
 
       const fSel = document.getElementById('facultyFilter');
       faculties.forEach(f => {
         const opt = document.createElement('option');
-        opt.value = f; opt.textContent = f;
-        fSel.appendChild(opt);
+        opt.value = f; opt.textContent = f; fSel.appendChild(opt);
       });
 
       const tSel = document.getElementById('typeFilter');
       types.forEach(t => {
         const opt = document.createElement('option');
-        opt.value = t; opt.textContent = t;
-        tSel.appendChild(opt);
+        opt.value = t; opt.textContent = t; tSel.appendChild(opt);
       });
 
       renderCards();
     } catch (err) {
       document.getElementById('grid').innerHTML =
-        `<div class="empty">⚠️ โหลดข้อมูลไม่สำเร็จ<br><span style="font-size:13px;">${err.message}</span></div>`;
+        `<div class="state-box"><div class="state-icon">ERR</div><div class="state-text">โหลดข้อมูลไม่สำเร็จ</div></div>`;
     }
   }
 
+  function getInitials(name) {
+    if (!name) return '?';
+    const parts = name.trim().split(' ');
+    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+    return name.substring(0, 2).toUpperCase();
+  }
+
   function renderCards() {
-    const keyword  = document.getElementById('searchInput').value.toLowerCase().trim();
-    const faculty  = document.getElementById('facultyFilter').value;
-    const type     = document.getElementById('typeFilter').value;
-    const grid     = document.getElementById('grid');
+    const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+    const faculty = document.getElementById('facultyFilter').value;
+    const type    = document.getElementById('typeFilter').value;
+    const grid    = document.getElementById('grid');
 
     const filtered = allMembers.filter(m => {
       const matchSearch  = !keyword || m.name.toLowerCase().includes(keyword) || (m.studentId || "").includes(keyword);
       const matchFaculty = !faculty || m.faculty === faculty || (faculty === "นักปั่นอิสระ" && !m.faculty);
-      const matchType    = !type    || m.type    === type;
+      const matchType    = !type    || m.type === type;
       return matchSearch && matchFaculty && matchType;
     });
 
-    document.getElementById('counter').innerText = `👥 ${filtered.length} / ${allMembers.length} คน`;
+    document.getElementById('counter').innerText = `${filtered.length} / ${allMembers.length} คน`;
 
     if (!filtered.length) {
-      grid.innerHTML = `<div class="empty">🔎 ไม่พบข้อมูลที่ค้นหา</div>`;
+      grid.innerHTML = `<div class="state-box"><div class="state-icon">404</div><div class="state-text">ไม่พบข้อมูลที่ค้นหา</div></div>`;
       return;
     }
 
     grid.innerHTML = filtered.map((m, i) => {
-     const photoHtml = m.photo
-  ? `<img class="card-photo" src="${m.photo}=w400" loading="lazy"
-         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-     <div class="card-placeholder" style="display:none;">🚴</div>`
-  : `<div class="card-placeholder">🚴</div>`;
-
       const delay = Math.min(i * 0.03, 0.5);
+      const photoHtml = m.photo
+        ? `<img class="card-photo" src="${m.photo}=w400" loading="lazy"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+           <div class="card-placeholder" style="display:none;"><div class="card-placeholder-icon">${getInitials(m.name)}</div></div>`
+        : `<div class="card-placeholder"><div class="card-placeholder-icon">${getInitials(m.name)}</div></div>`;
 
       return `
         <div class="card" style="animation-delay:${delay}s">
           ${photoHtml}
           <div class="card-body">
             <div class="card-name">${m.name}</div>
-            ${m.nickname ? `<div class="card-nickname">"${m.nickname}"</div>` : ""}
-            ${m.studentId ? `<div class="card-id">🎓 ${m.studentId}</div>` : ""}
-            <div>
-              ${m.faculty  ? `<span class="badge badge-faculty">${m.faculty}</span>` : ""}
-              ${m.rideDate ? `<span class="badge badge-date">📅 ${m.rideDate.substring(0,10)}</span>` : ""}
+            ${m.nickname ? `<div class="card-nickname">"${m.nickname}"</div>` : ''}
+            ${m.studentId ? `<div class="card-id">${m.studentId}</div>` : ''}
+            <div class="card-tags">
+              ${m.faculty  ? `<span class="tag tag-faculty">${m.faculty}</span>` : ''}
+              ${m.rideDate ? `<span class="tag tag-date">${m.rideDate.substring(0,10)}</span>` : ''}
             </div>
           </div>
         </div>`;
