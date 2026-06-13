@@ -235,6 +235,8 @@
     if (!name)   return alert("กรุณากรอกชื่อ-นามสกุล");
     if (!tel)    return alert("กรุณากรอกเบอร์โทรศัพท์");
     if (!amount) return alert("กรุณากรอกจำนวนเงิน");
+    if (!amount) return alert("กรุณากรอกจำนวนเงิน");
+if (wantReceipt && parseFloat(amount) < 1000) return alert("ใบอนุโมทนาจะได้รับเมื่อบริจาค 1,000 บาทขึ้นไป");
     if (document.getElementById('fileInput').files.length === 0) return alert("กรุณาแนบสลิปโอนเงิน");
 
     // บังคับเพิ่มเติมสำหรับคนขอใบเสร็จ
