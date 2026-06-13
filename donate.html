@@ -237,7 +237,7 @@
     if (!amount) return alert("กรุณากรอกจำนวนเงิน");
     if (!amount) return alert("กรุณากรอกจำนวนเงิน");
 if (wantReceipt && parseFloat(amount) < 1000) {
-  const ok = confirm("จำนวนเงินต่ำกว่า 1,000 บาท จะไม่ได้รับใบอนุโมทนา\nต้องการดำเนินการต่อไหมครับ?");
+  const ok = confirm("จำนวนเงินต่ำกว่า 1,000 บาท จะได้รับแค่ใบเสร็จ แต่จะไม่ได้รับใบอนุโมทนา\nต้องการดำเนินการต่อไหมครับ?");
   if (!ok) return;
 }
     if (document.getElementById('fileInput').files.length === 0) return alert("กรุณาแนบสลิปโอนเงิน");
