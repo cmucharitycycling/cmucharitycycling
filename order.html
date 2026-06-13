@@ -91,6 +91,7 @@
     .size-row { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.06); padding: 7px 10px; margin-bottom: 4px; transition: border-color 0.12s, background 0.12s; }
     .size-row.has-qty { border-color: rgba(241,196,15,0.35); background: rgba(241,196,15,0.03); }
     .size-name { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: var(--white); letter-spacing: 0.1em; min-width: 36px; }
+    .size-chest { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: rgba(240,237,232,0.3); letter-spacing: 0.06em; flex: 1; padding-left: 8px; }
     .qty-ctrl { display: flex; align-items: center; }
     .qty-btn { width: 26px; height: 26px; border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.04); color: var(--white); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s; font-family: monospace; }
     .qty-btn:hover { border-color: var(--yellow); color: var(--yellow); background: rgba(241,196,15,0.08); }
@@ -269,12 +270,17 @@
   var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwuG49MMsG4Gyo3IssH2VyQZqnVUWTAxLvFDiyEMUR3GopE0seWkgOxwfYXy9e-W9-C/exec";
   var MAX_QTY = 20;
 
+  var CHEST_PRO_M  = {"4XS":25,"3XS":26,"2XS":27,"XS":29,"S":31,"M":33,"L":35,"XL":37,"2XL":39,"3XL":41,"4XL":43};
+  var CHEST_PRO_F  = {"4XS":25,"3XS":26,"2XS":27,"XS":29,"S":31,"M":33,"L":35};
+  var CHEST_STD    = {"2XS":32,"XS":34,"S":36,"M":38,"L":40,"XL":42,"2XL":44,"3XL":46,"4XL":48,"5XL":50};
+  var CHEST_TSHIRT = {"SS":36,"S":38,"M":40,"L":42,"XL":44,"2XL":46,"3XL":48,"4XL":50};
+
   var PRODUCTS = [
-    { ref:"001", nameMain:"PRO JERSEY\nAERO", nameSub:"SHORT SLEEVE", nameDisplay:"เสื้อปั่นแขนสั้น Pro/Jersey Aero (Light spandex, Air dot)", fabric:"LIGHT SPANDEX\nAIR DOT FABRIC", price:1500, imgFront:"images/short-pro-front.png", imgBack:"images/short-pro-back.png", sizeChart:"size-short-pro.png", variants:[{ gender:"ชาย", gClass:"gender-tag-m", sizes:["4XS","3XS","2XS","XS","S","M","L","XL","2XL","3XL","4XL"] },{ gender:"หญิง", gClass:"gender-tag-f", sizes:["4XS","3XS","2XS","XS","S","M","L"] }] },
-    { ref:"002", nameMain:"PRO JERSEY\nAERO", nameSub:"LONG SLEEVE", nameDisplay:"เสื้อปั่นแขนยาว Pro/Jersey Aero (Light spandex, Air dot)", fabric:"LIGHT SPANDEX\nAIR DOT FABRIC", price:1700, imgFront:"images/long-pro-front.png", imgBack:"images/long-pro-back.png", sizeChart:"size-long-pro.png", variants:[{ gender:"ชาย", gClass:"gender-tag-m", sizes:["4XS","3XS","2XS","XS","S","M","L","XL","2XL","3XL","4XL"] },{ gender:"หญิง", gClass:"gender-tag-f", sizes:["4XS","3XS","2XS","XS","S","M","L"] }] },
-    { ref:"003", nameMain:"STANDARD\nJERSEY", nameSub:"SHORT SLEEVE", nameDisplay:"เสื้อปั่นแขนสั้น Standard (Micro fiber spandex)", fabric:"MICRO FIBER\nSPANDEX", price:600, imgFront:"images/short-standard-front.png", imgBack:"images/short-standard-back.png", sizeChart:"size-short-standard.png", variants:[{ gender:"Unisex", gClass:"gender-tag-u", sizes:["2XS","XS","S","M","L","XL","2XL","3XL","4XL","5XL"] }] },
-    { ref:"004", nameMain:"STANDARD\nJERSEY", nameSub:"LONG SLEEVE", nameDisplay:"เสื้อปั่นแขนยาว Standard (Micro fiber spandex)", fabric:"MICRO FIBER\nSPANDEX", price:750, imgFront:"images/long-standard-front.png", imgBack:"images/long-standard-back.png", sizeChart:"size-long-standard.png", variants:[{ gender:"Unisex", gClass:"gender-tag-u", sizes:["2XS","XS","S","M","L","XL","2XL","3XL","4XL","5XL"] }] },
-    { ref:"005", nameMain:"CMU\nT-SHIRT", nameSub:"CREW NECK", nameDisplay:"เสื้อยืดคอกลม", fabric:"COTTON BLEND", price:250, imgFront:"images/tshirt-front.png", imgBack:null, sizeChart:"size-tshirt.png", variants:[{ gender:"Unisex", gClass:"gender-tag-u", sizes:["SS","S","M","L","XL","2XL","3XL","4XL"] }] }
+    { ref:"001", nameMain:"PRO JERSEY\nAERO", nameSub:"SHORT SLEEVE", nameDisplay:"เสื้อปั่นแขนสั้น Pro/Jersey Aero (Light spandex, Air dot)", fabric:"LIGHT SPANDEX\nAIR DOT FABRIC", price:1500, imgFront:"images/short-pro-front.png", imgBack:"images/short-pro-back.png", sizeChart:"size-short-pro.png", variants:[{ gender:"ชาย", gClass:"gender-tag-m", sizes:["4XS","3XS","2XS","XS","S","M","L","XL","2XL","3XL","4XL"], chest:CHEST_PRO_M },{ gender:"หญิง", gClass:"gender-tag-f", sizes:["4XS","3XS","2XS","XS","S","M","L"], chest:CHEST_PRO_F }] },
+    { ref:"002", nameMain:"PRO JERSEY\nAERO", nameSub:"LONG SLEEVE", nameDisplay:"เสื้อปั่นแขนยาว Pro/Jersey Aero (Light spandex, Air dot)", fabric:"LIGHT SPANDEX\nAIR DOT FABRIC", price:1700, imgFront:"images/long-pro-front.png", imgBack:"images/long-pro-back.png", sizeChart:"size-long-pro.png", variants:[{ gender:"ชาย", gClass:"gender-tag-m", sizes:["4XS","3XS","2XS","XS","S","M","L","XL","2XL","3XL","4XL"], chest:CHEST_PRO_M },{ gender:"หญิง", gClass:"gender-tag-f", sizes:["4XS","3XS","2XS","XS","S","M","L"], chest:CHEST_PRO_F }] },
+    { ref:"003", nameMain:"STANDARD\nJERSEY", nameSub:"SHORT SLEEVE", nameDisplay:"เสื้อปั่นแขนสั้น Standard (Micro fiber spandex)", fabric:"MICRO FIBER\nSPANDEX", price:600, imgFront:"images/short-standard-front.png", imgBack:"images/short-standard-back.png", sizeChart:"size-short-standard.png", variants:[{ gender:"Unisex", gClass:"gender-tag-u", sizes:["2XS","XS","S","M","L","XL","2XL","3XL","4XL","5XL"], chest:CHEST_STD }] },
+    { ref:"004", nameMain:"STANDARD\nJERSEY", nameSub:"LONG SLEEVE", nameDisplay:"เสื้อปั่นแขนยาว Standard (Micro fiber spandex)", fabric:"MICRO FIBER\nSPANDEX", price:750, imgFront:"images/long-standard-front.png", imgBack:"images/long-standard-back.png", sizeChart:"size-long-standard.png", variants:[{ gender:"Unisex", gClass:"gender-tag-u", sizes:["2XS","XS","S","M","L","XL","2XL","3XL","4XL","5XL"], chest:CHEST_STD }] },
+    { ref:"005", nameMain:"CMU\nT-SHIRT", nameSub:"CREW NECK", nameDisplay:"เสื้อยืดคอกลม", fabric:"COTTON BLEND", price:250, imgFront:"images/tshirt-front.png", imgBack:null, sizeChart:"size-tshirt.png", variants:[{ gender:"Unisex", gClass:"gender-tag-u", sizes:["SS","S","M","L","XL","2XL","3XL","4XL"], chest:CHEST_TSHIRT }] }
   ];
 
   var qtyMap = {};
@@ -305,8 +311,10 @@
       p.variants.forEach(function(v,vIdx){
         varHtml+='<div class="'+v.gClass+' gender-tag">'+v.gender+'</div>';
         v.sizes.forEach(function(s){
+          var chestVal = v.chest && v.chest[s] ? '<span class="size-chest">'+v.chest[s]+'"</span>' : '';
           varHtml+='<div class="size-row" id="row-'+pIdx+'-'+vIdx+'-'+s+'">'
             +'<span class="size-name">'+s+'</span>'
+            +chestVal
             +'<div class="qty-ctrl">'
             +'<button class="qty-btn" onclick="changeQty('+pIdx+','+vIdx+',\''+s+'\',-1)">−</button>'
             +'<span class="qty-num" id="qty-'+pIdx+'-'+vIdx+'-'+s+'">0</span>'
