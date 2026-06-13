@@ -45,14 +45,16 @@
       transition: color 0.15s;
     }
     .nav-links a:hover { color: var(--white); }
-    .nav-cta {
+    .nav-cta,
+    .nav-links a.nav-cta {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
-      background: var(--yellow); color: var(--dark);
+      background: var(--yellow); color: #0d0b14;
       padding: 8px 18px; border-radius: 2px; text-decoration: none;
       transition: background 0.15s;
     }
-    .nav-cta:hover { background: var(--yellow2); }
+    .nav-cta:hover,
+    .nav-links a.nav-cta:hover { background: var(--yellow2); color: #0d0b14; }
 
     /* hamburger */
     .nav-hamburger {
