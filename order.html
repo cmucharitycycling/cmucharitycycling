@@ -173,6 +173,12 @@
     </label>
   </div>
 
+  <!-- ORDER SUMMARY -->
+  <div id="order-summary" style="display:none; background:rgba(241,196,15,0.05); border:1px solid rgba(241,196,15,0.2); border-radius:6px; padding:16px 20px; margin-top:32px;">
+    <div style="font-size:11px;font-weight:300;letter-spacing:0.2em;color:var(--yellow);text-transform:uppercase;margin-bottom:12px;">สรุปรายการที่เลือก</div>
+    <div id="summary-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+  </div>
+
   <div class="total-bar">
     <span class="total-label">ยอดชำระสุทธิ</span>
     <span class="total-amount">฿<span id="display_total">0</span></span>
@@ -349,14 +355,38 @@
 
   function calc() {
     let total = 0;
+    const summaryMap = {};
+
     PRODUCTS.forEach((p, pIdx) => {
       p.variants.forEach((v, vIdx) => {
-        v.sizes.forEach(s => { const q = getQty(pIdx, vIdx, s); if (q > 0) total += q * p.price; });
+        v.sizes.forEach(s => {
+          const q = getQty(pIdx, vIdx, s);
+          if (q > 0) {
+            total += q * p.price;
+            if (!summaryMap[pIdx]) summaryMap[pIdx] = { name: p.name, items: [] };
+            summaryMap[pIdx].items.push(`${v.gender} ${s}×${q}`);
+          }
+        });
       });
     });
+
     let ship = parseInt(document.querySelector('input[name="ship"]:checked').value);
     if (total > 0) total += ship;
     document.getElementById('display_total').innerText = total.toLocaleString();
+
+    const summaryDiv = document.getElementById('order-summary');
+    const summaryList = document.getElementById('summary-list');
+    const keys = Object.keys(summaryMap);
+    if (keys.length === 0) {
+      summaryDiv.style.display = 'none';
+    } else {
+      summaryDiv.style.display = 'block';
+      summaryList.innerHTML = keys.map(k => `
+        <div style="font-size:13px;font-weight:300;color:var(--white);display:flex;gap:8px;align-items:flex-start;">
+          <span style="color:var(--yellow);flex-shrink:0;">✓</span>
+          <span><span style="font-weight:600;">${summaryMap[k].name}</span> — ${summaryMap[k].items.join(', ')}</span>
+        </div>`).join('');
+    }
     return total;
   }
 
