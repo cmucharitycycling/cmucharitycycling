@@ -167,7 +167,29 @@
       nav { padding: 16px 20px; }
       .nav-links { display: none; }
       .page-header, .main { padding-left: 20px; padding-right: 20px; }
+
+      .btn-submit:disabled { background: rgba(255,255,255,0.1); color: var(--muted); cursor: not-allowed; transform: none; }
+
+    /* SIZE MODAL */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.85); align-items: center; justify-content: center;
+      padding: 20px;
     }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      position: relative; max-width: 700px; width: 100%;
+      border-radius: 8px; overflow: hidden;
+    }
+    .modal-box img { width: 100%; display: block; border-radius: 8px; }
+    .modal-close {
+      position: absolute; top: 10px; right: 10px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.3);
+      color: white; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+      
   </style>
 </head>
 <body>
@@ -255,33 +277,32 @@
     {
       name: "เสื้อปั่นแขนสั้น Pro/Jersey Aero (Light spandex, Air dot)", price: 1500,
       img: "https://img2.pic.in.th/sleeve-02.png",
-      variants: [
-        { gender: "ชาย", sizes: ["4XS","3XS","2XS","XS","S","M","L","XL","2XL","3XL","4XL"] },
-        { gender: "หญิง", sizes: ["4XS","3XS","2XS","XS","S","M","L"] }
-      ]
+      sizeChart: "size-short-pro.png",
+      variants: [...]
     },
     {
       name: "เสื้อปั่นแขนยาว Pro/Jersey Aero (Light spandex, Air dot)", price: 1700,
       img: "https://img2.pic.in.th/sleeve-01026c54cf4132a0c1.png",
-      variants: [
-        { gender: "ชาย", sizes: ["4XS","3XS","2XS","XS","S","M","L","XL","2XL","3XL","4XL"] },
-        { gender: "หญิง", sizes: ["4XS","3XS","2XS","XS","S","M","L"] }
-      ]
+      sizeChart: "size-long-pro.png",
+      variants: [...]
     },
     {
       name: "เสื้อปั่นแขนสั้น Standard (Micro fiber spandex)", price: 600,
       img: "https://img2.pic.in.th/sleeve-02.png",
-      variants: [{ gender: "Unisex", sizes: ["4XS","3XS","2XS","XS","S","M","L","XL","2XL","3XL","4XL"] }]
+      sizeChart: "size-short-standard.png",
+      variants: [...]
     },
     {
       name: "เสื้อปั่นแขนยาว Standard (Micro fiber spandex)", price: 750,
       img: "https://img2.pic.in.th/sleeve-01026c54cf4132a0c1.png",
-      variants: [{ gender: "Unisex", sizes: ["4XS","3XS","2XS","XS","S","M","L","XL","2XL","3XL","4XL"] }]
+      sizeChart: "size-long-standard.png",
+      variants: [...]
     },
     {
       name: "เสื้อยืดคอกลม", price: 250,
       img: "https://img1.pic.in.th/images/MENU-06.png",
-      variants: [{ gender: "Unisex", sizes: ["SS","S","M","L","XL","2XL","3XL","4XL"] }]
+      sizeChart: "size-tshirt.png",
+      variants: [...]
     }
   ];
 
@@ -367,6 +388,14 @@
     el.innerText = input.files[0] ? '✓ ' + input.files[0].name : '';
   }
 
+function openSizeModal(src) {
+  document.getElementById('modal-img').src = src;
+  document.getElementById('size-modal').classList.add('open');
+}
+function closeSizeModal(e) {
+  if (e.target.id === 'size-modal') document.getElementById('size-modal').classList.remove('open');
+}
+  
   async function sendData() {
     const btn = document.getElementById('btn');
     let total = calc();
@@ -434,6 +463,24 @@
   }
 
   init();
+  list.innerHTML += `
+  <div class="product-card">
+    <img src="${p.img}" class="product-img" alt="${p.name}">
+    <div class="product-body">
+      <div class="product-name">${p.name}</div>
+      <div class="product-price">฿${p.price.toLocaleString()}</div>
+      ${p.sizeChart ? `<button onclick="openSizeModal('${p.sizeChart}')" style="background:transparent;border:1px solid rgba(241,196,15,0.4);color:var(--yellow);padding:4px 12px;border-radius:3px;font-family:'IBM Plex Sans Thai';font-size:12px;cursor:pointer;margin-bottom:12px;letter-spacing:0.06em;">📐 ดูตาราง size</button>` : ''}
+      ${variantHtml}
+    </div>
+  </div>`;
 </script>
+
+  <div class="modal-overlay" id="size-modal" onclick="closeSizeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('size-modal').classList.remove('open')">✕</button>
+    <img id="modal-img" src="" alt="size chart">
+  </div>
+</div>
+  
 </body>
 </html>
