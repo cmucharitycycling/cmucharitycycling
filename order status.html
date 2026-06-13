@@ -2,81 +2,171 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="icon" type="image/png" href="logo.png?v=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>เช็คสถานะการสั่งซื้อ</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+  <title>เช็คสถานะ — CMU Charity Cycling</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;600;700&family=IBM+Plex+Sans+Thai+Condensed:wght@700&display=swap" rel="stylesheet">
   <style>
-    :root { --primary: #2c263f; --accent: #f1c40f; --success: #27ae60; }
-    * { box-sizing: border-box; }
-    body { font-family: 'Kanit', sans-serif; background: #2c263f; margin: 0; padding: 20px; }
-
-    .container { max-width: 700px; margin: auto; }
-
-    .search-box {
-      background: white; border-radius: 16px; padding: 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin-bottom: 20px; text-align: center;
+    :root {
+      --dark:   #1e1535;
+      --yellow: #f1c40f;
+      --yellow2:#e6b800;
+      --white:  #f0ede8;
+      --muted:  rgba(240,237,232,0.5);
+      --border: rgba(255,255,255,0.08);
+      --card:   rgba(255,255,255,0.04);
     }
-    .search-box h2 { color: var(--primary); font-size: 24px; margin: 0 0 8px 0; }
-    .search-box p  { color: #777; font-size: 15px; margin: 0 0 20px 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'IBM Plex Sans Thai', sans-serif; background: var(--dark); color: var(--white); min-height: 100vh; padding-top: 80px; }
 
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 40px; background: #0d0b14; border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: 22px; letter-spacing: 0.12em; color: var(--yellow); text-decoration: none; font-weight: 700; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { color: var(--muted); font-size: 15px; font-weight: 600; text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-cta { background: var(--yellow); color: #0d0b14; padding: 8px 20px; border-radius: 4px; font-size: 14px; font-weight: 600; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: var(--yellow2); }
+
+    /* HAMBURGER */
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: all 0.3s ease; }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-mobile { display: none; position: fixed; top: 61px; left: 0; right: 0; bottom: 0; background: #0d0b14; z-index: 99; flex-direction: column; padding: 32px 24px; border-top: 1px solid var(--border); overflow-y: auto; }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile ul { list-style: none; display: flex; flex-direction: column; gap: 4px; margin-bottom: 24px; }
+    .nav-mobile ul li a { display: block; padding: 14px 0; font-size: 20px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.06); transition: color 0.2s; }
+    .nav-mobile ul li a:hover { color: var(--white); }
+    .nav-mobile .nav-cta-mobile { display: block; text-align: center; background: var(--yellow); color: #0d0b14; padding: 14px; border-radius: 4px; font-size: 16px; font-weight: 700; text-decoration: none; letter-spacing: 0.06em; }
+
+    .page-header { max-width: 700px; margin: 0 auto; padding: 50px 40px 40px; }
+    .page-eyebrow { font-size: 11px; font-weight: 300; letter-spacing: 0.25em; color: var(--yellow); text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .page-eyebrow::before { content: '⌕'; font-size: 14px; }
+    .page-title { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: clamp(36px, 6vw, 64px); letter-spacing: 0.04em; color: var(--white); font-weight: 700; margin-bottom: 8px; }
+    .page-sub { font-size: 14px; font-weight: 300; color: var(--muted); }
+
+    .search-wrap { max-width: 700px; margin: 0 auto; padding: 0 40px 40px; }
+    .search-box { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 24px; }
+    .search-label { font-size: 11px; font-weight: 300; letter-spacing: 0.2em; color: var(--yellow); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .search-label::before { content: '//'; font-size: 12px; font-weight: 700; opacity: 0.6; }
     .search-row { display: flex; gap: 10px; }
-    .search-input {
-      flex: 1; padding: 14px 16px; border: 2px solid #ddd; border-radius: 10px;
-      font-family: 'Kanit'; font-size: 16px; outline: none; transition: 0.2s;
+    .search-input { flex: 1; padding: 12px 16px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 4px; color: var(--white); font-family: 'IBM Plex Sans Thai'; font-size: 15px; outline: none; transition: border-color 0.2s; }
+    .search-input:focus { border-color: var(--yellow); }
+    .search-input::placeholder { color: rgba(255,255,255,0.2); }
+    .btn-search { padding: 12px 24px; background: var(--yellow); color: #0d0b14; border: none; border-radius: 4px; font-family: 'IBM Plex Sans Thai'; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s; letter-spacing: 0.04em; }
+    .btn-search:hover { background: var(--yellow2); }
+    .btn-search:disabled { background: rgba(255,255,255,0.1); color: var(--muted); cursor: not-allowed; }
+
+    .result-wrap { max-width: 700px; margin: 0 auto; padding: 0 40px 60px; }
+    .result-count { font-size: 11px; font-weight: 300; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
+    .result-count::before { content: '§'; font-size: 13px; color: var(--yellow); }
+
+    .result-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 20px 24px; margin-bottom: 12px; border-left: 3px solid var(--yellow); animation: fadeUp 0.3s ease both; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .card-name { font-size: 18px; font-weight: 600; color: var(--white); display: flex; align-items: center; gap: 8px; }
+    .card-name::before { content: '◈'; font-size: 12px; color: var(--yellow); }
+    .card-total { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--yellow); letter-spacing: 0.04em; }
+
+    .card-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: 14px; flex-wrap: wrap; align-items: flex-start; }
+    .card-label { color: var(--muted); font-size: 11px; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; min-width: 70px; padding-top: 2px; display: flex; align-items: center; gap: 4px; }
+    .card-label::before { font-size: 10px; color: var(--yellow); opacity: 0.7; }
+    .card-label-tel::before  { content: '◎'; }
+    .card-label-item::before { content: '▸'; }
+    .card-label-addr::before { content: '⌖'; }
+    .card-value { color: var(--white); font-weight: 300; flex: 1; line-height: 1.6; }
+    .card-value ul { list-style: none; padding: 0; }
+    .card-value ul li::before { content: '—  '; color: var(--yellow); opacity: 0.5; font-size: 12px; }
+
+    .card-date { font-size: 11px; font-weight: 300; color: rgba(240,237,232,0.3); margin-top: 14px; text-align: right; letter-spacing: 0.06em; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+    .card-date::before { content: '◷'; font-size: 12px; }
+
+    .state-box { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 60px 20px; text-align: center; }
+    .state-icon { font-family: 'IBM Plex Sans Thai Condensed', sans-serif; font-size: 48px; font-weight: 700; color: var(--yellow); opacity: 0.2; margin-bottom: 12px; }
+    .state-text { font-size: 15px; font-weight: 300; color: var(--muted); }
+    .state-sub  { font-size: 13px; font-weight: 300; color: rgba(240,237,232,0.25); margin-top: 6px; }
+
+    .loading-text { font-size: 13px; font-weight: 300; color: var(--yellow); letter-spacing: 0.15em; text-transform: uppercase; text-align: center; padding: 40px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .loading-text::before { content: '◌'; animation: spin 1s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      .page-header, .search-wrap, .result-wrap { padding-left: 20px; padding-right: 20px; }
     }
-    .search-input:focus { border-color: var(--accent); }
-    .btn-search {
-      padding: 14px 24px; background: var(--primary); color: var(--accent);
-      border: none; border-radius: 10px; font-family: 'Kanit'; font-size: 16px;
-      font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s;
-    }
-    .btn-search:hover { background: #3d3560; }
-    .btn-search:disabled { background: #aaa; cursor: not-allowed; }
-
-    /* Cards */
-    .result-card {
-      background: white; border-radius: 14px; padding: 20px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2); margin-bottom: 15px;
-      border-left: 5px solid var(--accent); animation: fadeIn 0.3s ease;
-    }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-
-    .card-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-    .card-name   { font-size: 20px; font-weight: 600; color: var(--primary); }
-    .card-total  { background: var(--primary); color: var(--accent); padding: 6px 14px; border-radius: 20px; font-size: 16px; font-weight: 600; }
-
-    .card-row    { display: flex; gap: 8px; margin-bottom: 6px; font-size: 15px; flex-wrap: wrap; }
-    .card-label  { color: #999; min-width: 80px; }
-    .card-value  { color: #333; flex: 1; }
-
-    .badge-date  { font-size: 13px; color: #aaa; margin-top: 10px; text-align: right; }
-
-    .empty-state { text-align:center; color: #aaa; padding: 50px 20px; font-size: 18px; }
-    .empty-state .icon { font-size: 50px; margin-bottom: 10px; }
-
-    .loading { text-align:center; color: var(--accent); padding: 40px; font-size: 18px; }
   </style>
 </head>
 <body>
-<div class="container">
 
+<nav>
+  <a href="index.html" class="nav-logo">CMU CHARITY CYCLING</a>
+  <ul class="nav-links">
+    <li><a href="order.html">ของที่ระลึก [↗]</a></li>
+    <li><a href="status.html" class="active">เช็คสถานะ [↗]</a></li>
+    <li><a href="riders.html">ทะเบียนนักปั่น [↗]</a></li>
+    <li><a href="donate.html">ร่วมบริจาค [↗]</a></li>
+  </ul>
+  <a href="order.html" class="nav-cta">สั่งของที่ระลึก</a>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="เมนู">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-mobile" id="nav-mobile">
+  <ul>
+    <li><a href="order.html" onclick="closeMenu()">ของที่ระลึก [↗]</a></li>
+    <li><a href="status.html" onclick="closeMenu()">เช็คสถานะ [↗]</a></li>
+    <li><a href="riders.html" onclick="closeMenu()">ทะเบียนนักปั่น [↗]</a></li>
+    <li><a href="donate.html" onclick="closeMenu()">ร่วมบริจาค [↗]</a></li>
+  </ul>
+  <a href="order.html" class="nav-cta-mobile">สั่งของที่ระลึก</a>
+</div>
+
+<div class="page-header">
+  <p class="page-eyebrow">Order Status</p>
+  <h1 class="page-title">เช็คสถานะ<br>การสั่งซื้อ</h1>
+  <p class="page-sub">พิมพ์ชื่อ-นามสกุล หรือเบอร์โทรศัพท์ที่ใช้สั่งซื้อ</p>
+</div>
+
+<div class="search-wrap">
   <div class="search-box">
-    <h2>🔍 เช็คสถานะการสั่งซื้อเสื้อ ปั่น/คอกลม</h2>
-    <p>พิมพ์ชื่อ-นามสกุล หรือ เบอร์โทรศัพท์ที่ใช้สั่งซื้อ</p>
+    <div class="search-label">ค้นหาออเดอร์</div>
     <div class="search-row">
-      <input type="text" id="keyword" class="search-input" placeholder="เช่น สมชาย หรือ 08xxxxxxxx">
+      <input type="text" id="keyword" class="search-input" placeholder="ชื่อ หรือ 08xxxxxxxxx">
       <button onclick="search()" id="btnSearch" class="btn-search">ค้นหา</button>
     </div>
   </div>
-
-  <div id="result-area"></div>
-
 </div>
 
+<div class="result-wrap" id="result-area"></div>
+
+<footer style="border-top:1px solid var(--border);padding:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;max-width:700px;margin:0 auto;">
+  <a href="index.html" style="font-family:'IBM Plex Sans Thai Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:0.12em;color:var(--yellow);text-decoration:none;">CMU CHARITY CYCLING</a>
+  <p style="font-size:12px;font-weight:300;color:rgba(240,237,232,0.25);letter-spacing:0.06em;">© 2569 สมาคมนักศึกษาเก่า มหาวิทยาลัยเชียงใหม่</p>
+</footer>
+
 <script>
-  // 🔴 แก้ตรงนี้: ใส่ URL เดียวกับฟอร์มสั่งซื้อ
   const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxZQNXxfwmLYXH8sUnFMnVKDjbA_bU47_g4CHW4My-PmAB0PF2YRyP0W-W64AxRJQRZ/exec";
+
+  function toggleMenu() {
+    var menu = document.getElementById('nav-mobile');
+    var btn  = document.getElementById('hamburger');
+    var isOpen = menu.classList.contains('open');
+    menu.classList.toggle('open');
+    btn.classList.toggle('open');
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  }
+  function closeMenu() {
+    document.getElementById('nav-mobile').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  }
 
   document.getElementById('keyword').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') search();
@@ -85,75 +175,75 @@
   async function search() {
     const keyword = document.getElementById('keyword').value.trim();
     if (!keyword) return alert("กรุณาพิมพ์ชื่อหรือเบอร์โทรก่อนค้นหา");
-
     const btn  = document.getElementById('btnSearch');
     const area = document.getElementById('result-area');
-
-    btn.disabled  = true;
-    btn.innerText = "⏳ กำลังค้นหา...";
-    area.innerHTML = `<div class="loading">🔄 กำลังโหลดข้อมูล...</div>`;
+    btn.disabled = true; btn.innerText = "กำลังค้นหา...";
+    area.innerHTML = `<div class="loading-text">กำลังโหลดข้อมูล</div>`;
 
     try {
-      const url = `${WEB_APP_URL}?search=${encodeURIComponent(keyword)}`;
-      const res  = await fetch(url);
+      const res  = await fetch(`${WEB_APP_URL}?search=${encodeURIComponent(keyword)}`);
       const data = await res.json();
 
       if (!data.length) {
         area.innerHTML = `
-          <div class="result-card" style="border-left-color:#e74c3c;">
-            <div class="empty-state">
-              <div class="icon">🔎</div>
-              <div>ไม่พบข้อมูลการสั่งซื้อ<br>
-              <span style="font-size:14px; color:#bbb;">กรุณาตรวจสอบชื่อหรือเบอร์โทรให้ถูกต้อง</span></div>
-            </div>
+          <div class="state-box">
+            <div class="state-icon">404</div>
+            <div class="state-text">ไม่พบข้อมูลการสั่งซื้อ</div>
+            <div class="state-sub">กรุณาตรวจสอบชื่อหรือเบอร์โทรให้ถูกต้อง</div>
           </div>`;
         return;
       }
 
-      area.innerHTML = `<div style="color:#aaa; font-size:14px; margin-bottom:10px; text-align:right;">พบ ${data.length} รายการ</div>`;
-
-      data.forEach(order => {
-        // แยกรายการสินค้าให้อ่านง่าย
-        const itemLines = order.details.split("),").map((d, i, arr) => 
-  `<li style="margin:3px 0;">${d.trim()}${i < arr.length - 1 ? ')' : ''}</li>`
-).join("");
-
+      area.innerHTML = `<div class="result-count">พบ ${data.length} รายการ</div>`;
+      data.forEach((order, i) => {
+        const itemLines = order.details.split("),").map((d, idx, arr) =>
+          `<li>${d.trim()}${idx < arr.length - 1 ? ')' : ''}</li>`).join("");
         area.innerHTML += `
-          <div class="result-card">
-            <div class="card-header">
-              <div class="card-name">👤 ${order.name}</div>
-              <div class="card-total">💰 ${Number(order.total).toLocaleString()} บาท</div>
+          <div class="result-card" style="animation-delay:${i*0.05}s">
+            <div class="card-top">
+              <div class="card-name">${order.name}</div>
+              <div class="card-total">฿${Number(order.total).toLocaleString()}</div>
             </div>
             <div class="card-row">
-              <span class="card-label">📱 เบอร์โทร</span>
+              <span class="card-label card-label-tel">โทร</span>
               <span class="card-value">${order.tel}</span>
             </div>
             <div class="card-row">
-              <span class="card-label">🛍️ รายการ</span>
-              <span class="card-value"><ul style="margin:0; padding-left:18px;">${itemLines}</ul></span>
+              <span class="card-label card-label-item">รายการ</span>
+              <span class="card-value"><ul>${itemLines}</ul></span>
             </div>
             ${order.address ? `
             <div class="card-row">
-              <span class="card-label">📦 ที่อยู่</span>
+              <span class="card-label card-label-addr">ที่อยู่</span>
               <span class="card-value">${order.address}</span>
             </div>` : ''}
-            <div class="badge-date">🕐 สั่งซื้อเมื่อ ${order.date}</div>
+            <div class="card-date">${order.date}</div>
           </div>`;
       });
 
     } catch (err) {
       area.innerHTML = `
-        <div class="result-card" style="border-left-color:#e74c3c;">
-          <div class="empty-state">
-            <div class="icon">⚠️</div>
-            <div>เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง</div>
-          </div>
+        <div class="state-box">
+          <div class="state-icon">ERR</div>
+          <div class="state-text">เกิดข้อผิดพลาด</div>
+          <div class="state-sub">กรุณาลองใหม่อีกครั้ง</div>
         </div>`;
     } finally {
-      btn.disabled  = false;
-      btn.innerText = "ค้นหา";
+      btn.disabled = false; btn.innerText = "ค้นหา";
     }
   }
 </script>
+
+<!-- LINE OA FLOATING BUTTON -->
+<a href="https://lin.ee/PllKgPt" target="_blank"
+   style="position:fixed;bottom:24px;right:24px;z-index:999;width:56px;height:56px;border-radius:50%;background:#06C755;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(6,199,85,0.4);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;"
+   onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 28px rgba(6,199,85,0.6)'"
+   onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 20px rgba(6,199,85,0.4)'"
+>
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+    <path d="M12 2C6.48 2 2 6.26 2 11.5c0 3.01 1.49 5.68 3.8 7.4L5 22l3.28-1.64C9.39 20.77 10.67 21 12 21c5.52 0 10-4.26 10-9.5S17.52 2 12 2z"/>
+  </svg>
+</a>
+
 </body>
 </html>
