@@ -194,6 +194,10 @@
     <input type="tel" id="tel" class="form-input" placeholder="08xxxxxxxxx">
   </div>
   <div class="form-group">
+  <label class="form-label">อีเมล (สำหรับรับสรุปการสั่งซื้อ)</label>
+  <input type="email" id="email" class="form-input" placeholder="email@example.com">
+</div>
+  <div class="form-group">
     <label class="form-label">ที่อยู่จัดส่ง (กรณีเลือกจัดส่ง)</label>
     <textarea id="address" class="form-input" placeholder="ที่อยู่โดยละเอียด พร้อมรหัสไปรษณีย์" style="height:100px;resize:none;"></textarea>
   </div>
@@ -405,13 +409,17 @@
     try {
       const file = document.getElementById('fileInput').files[0];
       const base64 = await new Promise(r => { const rd = new FileReader(); rd.onload = () => r(rd.result.split(',')[1]); rd.readAsDataURL(file); });
-      const payload = {
-        name: document.getElementById('name').value,
-        tel: "'" + document.getElementById('tel').value,
-        address: document.getElementById('address').value,
-        total: total, details: details.join(", "),
-        fileData: base64, fileName: file.name, mimeType: file.type
-      };
+     const payload = {
+  name: document.getElementById('name').value,
+  tel: "'" + document.getElementById('tel').value,
+  address: document.getElementById('address').value,
+  email: document.getElementById('email').value,
+  total: total,
+  details: details.join(", "),
+  fileData: base64,
+  fileName: file.name,
+  mimeType: file.type
+};
       await fetch(WEB_APP_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
       document.body.innerHTML = `
         <div style="background:#0d0b14;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;font-family:'IBM Plex Sans Thai',sans-serif;">
