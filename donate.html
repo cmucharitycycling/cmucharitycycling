@@ -159,7 +159,7 @@
       <input type="email" id="email" class="form-input" placeholder="email@example.com">
     </div>
     <div class="form-group">
-      <label class="form-label">บริษัท/หน่วยงาน <span class="required">*</span></label>
+      <label class="form-label">บริษัท/หน่วยงาน <span class="optional">(optional)</span></label>
       <input type="text" id="company" class="form-input" placeholder="ชื่อบริษัทหรือหน่วยงาน">
     </div>
     <div class="form-group">
@@ -239,15 +239,13 @@
 
     // บังคับเพิ่มเติมสำหรับคนขอใบเสร็จ
     if (wantReceipt) {
-      const email   = document.getElementById('email').value.trim();
-      const company = document.getElementById('company').value.trim();
-      const address = document.getElementById('address').value.trim();
-      const taxId   = document.getElementById('taxId').value.trim();
-      if (!email)   return alert("กรุณากรอกอีเมล");
-      if (!company) return alert("กรุณากรอกชื่อบริษัทหรือหน่วยงาน");
-      if (!address) return alert("กรุณากรอกที่อยู่");
-      if (!taxId)   return alert("กรุณากรอกเลขบัตรประชาชน / เลขประจำตัวผู้เสียภาษี");
-    }
+  const email   = document.getElementById('email').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const taxId   = document.getElementById('taxId').value.trim();
+  if (!email)   return alert("กรุณากรอกอีเมล");
+  if (!address) return alert("กรุณากรอกที่อยู่");
+  if (!taxId)   return alert("กรุณากรอกเลขบัตรประชาชน / เลขประจำตัวผู้เสียภาษี");
+}
 
     btn.disabled = true;
     btn.innerText = "กำลังบันทึกข้อมูล...";
