@@ -616,7 +616,7 @@
 <div class="stat-row fade-in">
   <div class="stat-cell"><div class="stat-num">785</div><div class="stat-label">KM Total</div></div>
   <div class="stat-cell"><div class="stat-num">6</div><div class="stat-label">Days on Road</div></div>
-  <div class="stat-cell"><div class="stat-num">60+</div><div class="stat-label">Riders</div></div>
+  <div class="stat-cell"><div class="stat-num" id="rider-count">60+</div><div class="stat-label">Riders</div></div>
   <div class="stat-cell"><div class="stat-num">9</div><div class="stat-label">Years Running</div></div>
 </div>
 
@@ -866,6 +866,18 @@
   var pct = Math.round(current / goal * 100);
   document.getElementById('fund-pct').textContent = pct + '% ของเป้าหมาย';
   setTimeout(function() { document.getElementById('fund-fill').style.width = pct + '%'; }, 600);
+
+  /* rider count */
+  (async function(){
+    try {
+      var res = await fetch('https://script.google.com/macros/s/AKfycbwcFk6renjBy2xcWjovf5MY6r_MtasbiQ-8nExD4jYP8JR1xmx2PCLSIQMt92Uc6n_seA/exec');
+      var data = await res.json();
+      var count = Array.isArray(data) ? data.length : (data.riders ? data.riders.length : null);
+      if (count !== null && count > 0) {
+        document.getElementById('rider-count').textContent = count + '+';
+      }
+    } catch(e) {}
+  })();
 
   /* fade in */
   var obs = new IntersectionObserver(function(entries) {
