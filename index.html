@@ -614,10 +614,10 @@
 
 <!-- STAT ROW -->
 <div class="stat-row fade-in">
-  <div class="stat-cell"><div class="stat-num">785</div><div class="stat-label">KM Total</div></div>
-  <div class="stat-cell"><div class="stat-num">6</div><div class="stat-label">Days on Road</div></div>
-  <div class="stat-cell"><div class="stat-num" id="rider-count">60+</div><div class="stat-label">Riders</div></div>
-  <div class="stat-cell"><div class="stat-num">9</div><div class="stat-label">Years Running</div></div>
+  <div class="stat-cell"><div class="stat-num" id="stat-km">0</div><div class="stat-label">KM Total</div></div>
+  <div class="stat-cell"><div class="stat-num" id="stat-days">0</div><div class="stat-label">Days on Road</div></div>
+  <div class="stat-cell"><div class="stat-num" id="rider-count">0</div><div class="stat-label">Riders</div></div>
+  <div class="stat-cell"><div class="stat-num" id="stat-years">0</div><div class="stat-label">Years Running</div></div>
 </div>
 
 <!-- COUNTDOWN -->
@@ -755,12 +755,12 @@
 </section>
 
 <!-- FUNDRAISING -->
-<section class="section-wrap fade-in">
+<section class="section-wrap fade-in" id="fund-section">
   <div class="eyebrow">FUNDRAISING</div>
   <div class="section-title">ยอดระดมทุน</div>
   <div class="fund-wrap">
     <div class="fund-nums">
-      <div class="fund-current">฿0</div>
+      <div class="fund-current" id="fund-current">฿0</div>
       <div class="fund-goal">เป้าหมาย 3,000,000 บาท</div>
     </div>
     <div class="fund-track"><div class="fund-fill" id="fund-fill"></div></div>
@@ -858,32 +858,81 @@
   }
   tick(); setInterval(tick, 1000);
 
-  /* progress bar */
+  /* route progress bar */
   setTimeout(function() { document.getElementById('prog-fill').style.width = '100%'; }, 400);
 
-  /* fundraising */
-  var current = 0, goal = 3000000;
-  var pct = Math.round(current / goal * 100);
-  document.getElementById('fund-pct').textContent = pct + '% ของเป้าหมาย';
-  setTimeout(function() { document.getElementById('fund-fill').style.width = pct + '%'; }, 600);
+  /* easing */
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
-  /* rider count */
+  /* stat counter animation */
+  function animCount(el, target, suffix, dur) {
+    suffix = suffix || '';
+    var start = Date.now();
+    var tick = function() {
+      var p = Math.min((Date.now() - start) / dur, 1);
+      var val = Math.round(easeOut(p) * target);
+      el.textContent = val.toLocaleString() + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    tick();
+  }
+
+  /* rider count — fetch real data then animate */
+  var riderCount = 60;
   (async function(){
     try {
       var res = await fetch('https://script.google.com/macros/s/AKfycbwcFk6renjBy2xcWjovf5MY6r_MtasbiQ-8nExD4jYP8JR1xmx2PCLSIQMt92Uc6n_seA/exec');
       var data = await res.json();
       var count = Array.isArray(data) ? data.length : (data.riders ? data.riders.length : null);
-      if (count !== null && count > 0) {
-        document.getElementById('rider-count').textContent = count + '+';
-      }
+      if (count !== null && count > 0) riderCount = count;
     } catch(e) {}
   })();
 
-  /* fade in */
+  /* fundraising — fetch จาก sheets (placeholder ใส่ 0 ไว้ก่อน) */
+  var fundData = { reg: 0, don: 0, merch: 0 };
+  var FUND_GOAL = 3000000;
+
+  function animFund(data) {
+    var total = data.reg + data.don + data.merch;
+    var dur = 2000, start = Date.now();
+    var timer = setInterval(function() {
+      var p = Math.min(easeOut((Date.now() - start) / dur), 1);
+      var cur = Math.round(p * total);
+      var pct = Math.round(cur / FUND_GOAL * 100);
+      document.getElementById('fund-current').textContent = '฿' + cur.toLocaleString();
+      document.getElementById('fund-fill').style.width = Math.min(pct, 100) + '%';
+      document.getElementById('fund-pct').textContent = pct + '% ของเป้าหมาย';
+      if (p >= 1) clearInterval(timer);
+    }, 16);
+  }
+
+  /* scroll-triggered — ทำงานทุก section เมื่อ scroll มาถึง */
+  var statDone = false, fundDone = false;
   var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.08 });
+    entries.forEach(function(e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('visible');
+
+      /* stat row */
+      if (e.target.classList.contains('stat-row') && !statDone) {
+        statDone = true;
+        animCount(document.getElementById('stat-km'), 785, '+', 1800);
+        setTimeout(function(){ animCount(document.getElementById('stat-days'), 6, '', 1200); }, 200);
+        setTimeout(function(){ animCount(document.getElementById('rider-count'), riderCount, '+', 1400); }, 400);
+        setTimeout(function(){ animCount(document.getElementById('stat-years'), 9, '', 1000); }, 600);
+      }
+
+      /* fundraising */
+      if (e.target.id === 'fund-section' && !fundDone) {
+        fundDone = true;
+        animFund(fundData);
+      }
+    });
+  }, { threshold: 0.15 });
+
   document.querySelectorAll('.fade-in').forEach(function(el) { obs.observe(el); });
+  var fundSec = document.getElementById('fund-section');
+  if (fundSec) obs.observe(fundSec);
 </script>
 </body>
 </html>
